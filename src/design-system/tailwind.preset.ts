@@ -34,6 +34,7 @@ export const koraPreset = {
         'accent-sheer': semanticColors.bg.accentSheer,
         'accent-solid': semanticColors.bg.accentSolid,
         glass: semanticColors.bg.glass,
+        'glass-panel': semanticColors.bg.glassPanel,
         'icon-wash': semanticColors.bg.iconWash,
         'icon-wash-warm': semanticColors.bg.iconWashWarm,
 

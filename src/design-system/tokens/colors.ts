@@ -90,6 +90,16 @@ export const semanticColors = {
      * mejor", deja de ser vidrio y vuelve a ser una barra blanca.
      */
     glass: 'rgba(250, 249, 248, 0.55)',
+    /**
+     * Vidrio de los paneles que **contienen texto**, como el bloque del hero
+     * en mobile.
+     *
+     * Más opaco que el del nav a propósito: el nav solo lleva etiquetas cortas
+     * sobre una zona clara, mientras que acá hay un titular largo que se apoya
+     * sobre el casco oscuro. Con 0.55 el texto pierde contraste; con 0.74 se
+     * lee siempre y la figura se sigue viendo por detrás.
+     */
+    glassPanel: 'rgba(250, 249, 248, 0.74)',
     /** Círculo de los iconos de las cards de valor — impares. */
     iconWash: colorPrimitives.steel.wash,
     /** Círculo de los iconos de las cards de valor — pares. */
