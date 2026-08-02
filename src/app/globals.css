@@ -1,0 +1,43 @@
+@import '../design-system/theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-body antialiased;
+    /*
+      Los halos cálidos NO van acá: viven en `<AmbientGlow>` como capas del DOM,
+      porque un `background-image` no se puede desplazar con transformaciones y
+      necesitamos que hagan parallax. Ver ese componente.
+    */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-heading;
+    text-wrap: balance;
+  }
+
+  /* Respeta a quien pide menos movimiento. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

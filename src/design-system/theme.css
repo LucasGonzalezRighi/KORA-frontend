@@ -1,0 +1,84 @@
+/**
+ * Tokens expuestos como CSS variables.
+ *
+ * Tercera forma de consumir el design system (además de las clases de Tailwind
+ * y del objeto `tokens`). Útil para gradientes compuestos y para CSS que no
+ * pasa por Tailwind.
+ *
+ * Los valores tienen que coincidir con `tokens/colors.ts`. Si cambiás uno,
+ * cambiá el otro — son los dos únicos archivos que se tocan para repintar el sitio.
+ */
+
+:root {
+  /* — Superficies — */
+  --kora-canvas: #f7f6f5;
+  --kora-canvas-warm: #fdf1e6;
+  --kora-canvas-peach: #fbe4d2;
+  --kora-surface: #ffffff;
+  --kora-surface-inverse: #081422;
+  --kora-input-inverse: #222c39;
+
+  /* — Texto — */
+  --kora-text-heading: #081422;
+  --kora-text-body: #3a3f45;
+  --kora-text-on-inverse: #ffffff;
+  --kora-text-on-inverse-muted: #cecece;
+  --kora-text-on-inverse-accent: #afcbe3;
+
+  /* — Acento — */
+  --kora-accent: #c46a1f;
+  --kora-accent-soft: #ffb882;
+  --kora-accent-wash: #f8efe4;
+  --kora-accent-sheer: rgba(251, 217, 189, 0.6);
+
+  /* — Bordes — */
+  --kora-border-subtle: #fff3e8;
+  --kora-border-card: #c46a1f;
+  --kora-border-ink: #081422;
+  --kora-border-inverse: #4f5661;
+  --kora-border-hairline: rgba(8, 20, 34, 0.18);
+  --kora-border-hairline-inverse: rgba(255, 255, 255, 0.35);
+
+  /* — Bordes finos — */
+  --kora-border-card-hairline: rgba(196, 106, 31, 0.38);
+
+  /* — Iconos de card (alternan) — */
+  --kora-icon-wash: rgba(48, 91, 126, 0.2);
+  --kora-icon-wash-warm: #fff9f6;
+
+  /* — Glows — */
+  /* Ambiente del body: cuatro capas que recorren toda la página. */
+  --kora-glow-page:
+    radial-gradient(1200px 780px at 50% 21%, rgba(250, 196, 152, 0.42) 0%, rgba(247, 246, 245, 0) 62%),
+    radial-gradient(900px 520px at 93% 1%, rgba(251, 217, 189, 0.4) 0%, rgba(247, 246, 245, 0) 58%),
+    radial-gradient(560px 720px at -5% 34%, rgba(255, 184, 130, 0.3) 0%, rgba(247, 246, 245, 0) 62%),
+    radial-gradient(560px 720px at 105% 37%, rgba(255, 184, 130, 0.26) 0%, rgba(247, 246, 245, 0) 62%),
+    radial-gradient(560px 780px at -5% 47%, rgba(255, 184, 130, 0.24) 0%, rgba(247, 246, 245, 0) 62%),
+    radial-gradient(1100px 460px at 45% 79%, rgba(251, 217, 189, 0.34) 0%, rgba(247, 246, 245, 0) 65%);
+  --kora-glow-left: radial-gradient(
+    46% 58% at -6% 50%,
+    rgba(255, 184, 130, 0.32) 0%,
+    rgba(247, 246, 245, 0) 68%
+  );
+  --kora-glow-right: radial-gradient(
+    46% 58% at 106% 50%,
+    rgba(255, 184, 130, 0.32) 0%,
+    rgba(247, 246, 245, 0) 68%
+  );
+  --kora-glow-contact: radial-gradient(
+    70% 90% at 72% 100%,
+    rgba(196, 106, 31, 0.85) 0%,
+    rgba(8, 20, 34, 0) 70%
+  );
+  --kora-glow-contact-steel: radial-gradient(
+    55% 80% at 8% 100%,
+    rgba(175, 203, 227, 0.35) 0%,
+    rgba(8, 20, 34, 0) 70%
+  );
+
+  /* — Movimiento — */
+  --kora-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --kora-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --kora-duration-fast: 240ms;
+  --kora-duration-base: 400ms;
+}
