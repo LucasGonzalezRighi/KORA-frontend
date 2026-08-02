@@ -15,6 +15,7 @@ import {
   heroZoom,
   magnetic,
   parallaxDepth,
+  reducedMotion,
   revealOffset,
   staggers,
 } from './motion';
@@ -59,6 +60,7 @@ export const tokens = {
     easings,
     staggers,
     revealOffset,
+    reducedMotion,
     parallaxDepth,
     heroZoom,
     magnetic,

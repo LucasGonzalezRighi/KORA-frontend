@@ -59,8 +59,22 @@ export function useTextReveal<T extends HTMLElement = HTMLHeadingElement>(
       mm.add(MOTION_CONDITIONS, (context) => {
         const { isDesktop, prefersReduced } = context.conditions as MotionConditions;
 
-        // Sin animación: el texto queda tal cual, nunca oculto.
-        if (prefersReduced) return;
+        /*
+         * Movimiento reducido: fundido simple, sin partir el texto en líneas.
+         * La máscara por línea es desplazamiento puro, que es justo lo que la
+         * preferencia pide evitar — y además partir el texto altera el DOM sin
+         * necesidad. Con un fundido el titular igual "llega", no aparece de golpe.
+         */
+        if (prefersReduced) {
+          const { reducedMotion } = tokens.motion;
+          gsap.from(element, {
+            opacity: 0,
+            duration: reducedMotion.duration,
+            ease: 'none',
+            ...(immediate ? {} : { scrollTrigger: { trigger: element, start, once: true } }),
+          });
+          return;
+        }
 
         cancelFonts = whenFontsReady(() => {
           SplitText.create(element, {

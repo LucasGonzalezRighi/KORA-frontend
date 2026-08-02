@@ -31,10 +31,17 @@ export const MOTION_MEDIA = {
   mobile: '(max-width: 63.9375rem)',
   reduced: '(prefers-reduced-motion: reduce)',
   /**
-   * Puntero real, no dedo. Todo lo que reacciona al cursor se cuelga de esto:
-   * en touch no hay hover, y forzarlo produce estados que se quedan pegados.
+   * Hay un puntero real disponible. Todo lo que reacciona al cursor se cuelga
+   * de esto: en touch puro no hay hover, y forzarlo deja estados pegados.
+   *
+   * Usa `any-hover`/`any-pointer` y no `hover`/`pointer` a propósito. Los
+   * segundos describen el dispositivo de entrada *primario*: en una notebook
+   * con pantalla táctil, Windows suele reportar `pointer: coarse` aunque haya
+   * un mouse conectado, y eso apagaba los efectos en máquinas que sí tenían
+   * cursor. Los `any-*` responden por *cualquier* dispositivo disponible, que
+   * es lo que realmente importa acá.
    */
-  finePointer: '(hover: hover) and (pointer: fine)',
+  finePointer: '(any-hover: hover) and (any-pointer: fine)',
 } as const;
 
 export type MotionConditions = {

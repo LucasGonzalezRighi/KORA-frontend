@@ -32,6 +32,25 @@ export const staggers = {
 export const revealOffset = 24;
 
 /**
+ * Qué queda cuando el usuario pide menos movimiento.
+ *
+ * `prefers-reduced-motion` significa **reducir**, no eliminar. Apagar todo deja
+ * el sitio muerto para quien tenga esa preferencia activa — y en Windows se
+ * activa sola con el ahorro de batería, así que es mucha más gente de la que
+ * uno supone.
+ *
+ * Lo que marea es el *desplazamiento*: parallax, cosas que entran volando,
+ * secciones que se fijan. Un fundido de opacidad no marea a nadie. Así que en
+ * modo reducido se conservan los fundidos, sin movimiento y más cortos.
+ */
+export const reducedMotion = {
+  /** Duración de los fundidos en modo reducido. */
+  duration: 0.28,
+  /** Escalonado mínimo, para que no aparezca todo de golpe. */
+  stagger: 0.04,
+} as const;
+
+/**
  * Cuánto se desplaza cada capa de parallax, en px, a lo largo de todo su
  * recorrido de scroll. Positivo = baja más lento que la página.
  */

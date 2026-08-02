@@ -39,22 +39,33 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
 
       mm.add(MOTION_CONDITIONS, (context) => {
         const { isDesktop, prefersReduced } = context.conditions as MotionConditions;
-        if (prefersReduced) return;
 
         const items = gsap.utils.toArray<HTMLElement>(selector);
         if (items.length === 0) return;
+
+        const { reducedMotion } = tokens.motion;
+        const trigger = { trigger: containerRef.current, start, once: true };
+
+        // Movimiento reducido: se conserva el fundido, se saca el desplazamiento.
+        if (prefersReduced) {
+          gsap.from(items, {
+            opacity: 0,
+            duration: reducedMotion.duration,
+            ease: 'none',
+            stagger: reducedMotion.stagger,
+            scrollTrigger: trigger,
+          });
+          return;
+        }
 
         gsap.from(items, {
           y: isDesktop ? tokens.motion.revealOffset : tokens.motion.revealOffset * 0.6,
           opacity: 0,
           duration: isDesktop ? tokens.motion.durations.reveal : tokens.motion.durations.base,
           ease: tokens.motion.easings.outExpoSoft,
-          stagger: stagger ?? (isDesktop ? tokens.motion.staggers.base : tokens.motion.staggers.tight),
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start,
-            once: true,
-          },
+          stagger:
+            stagger ?? (isDesktop ? tokens.motion.staggers.base : tokens.motion.staggers.tight),
+          scrollTrigger: trigger,
         });
       });
 

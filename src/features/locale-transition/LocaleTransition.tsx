@@ -85,11 +85,6 @@ export function LocaleTransitionProvider({ children }: { children: ReactNode }) 
       // Un segundo clic mientras corre la salida no debe encadenar navegaciones.
       if (isChanging.current) return;
 
-      if (prefersReducedMotion()) {
-        router.push(href, { scroll: false });
-        return;
-      }
-
       const blocks = visibleBlocks();
       if (blocks.length === 0) {
         router.push(href, { scroll: false });
@@ -115,7 +110,18 @@ export function LocaleTransitionProvider({ children }: { children: ReactNode }) 
 
       failsafe.current = setTimeout(go, FAILSAFE_MS);
 
-      const { choreography, choreographyEase } = tokens.motion;
+      const { choreography, choreographyEase, reducedMotion } = tokens.motion;
+
+      // Movimiento reducido: solo se funde, sin desplazamiento ni escala.
+      if (prefersReducedMotion()) {
+        gsap.to(blocks, {
+          autoAlpha: 0,
+          duration: reducedMotion.duration,
+          ease: 'none',
+          onComplete: go,
+        });
+        return;
+      }
 
       gsap.to(blocks, {
         autoAlpha: 0,
@@ -143,7 +149,24 @@ export function LocaleTransitionProvider({ children }: { children: ReactNode }) 
       return;
     }
 
-    const { choreography, choreographyEase } = tokens.motion;
+    const { choreography, choreographyEase, reducedMotion } = tokens.motion;
+
+    if (prefersReducedMotion()) {
+      gsap.fromTo(
+        blocks,
+        { autoAlpha: 0 },
+        {
+          autoAlpha: 1,
+          duration: reducedMotion.duration,
+          ease: 'none',
+          clearProps: 'all',
+          onComplete: () => {
+            isChanging.current = false;
+          },
+        },
+      );
+      return;
+    }
 
     /*
      * La entrada dura más del doble que la salida y escalona más: la salida
