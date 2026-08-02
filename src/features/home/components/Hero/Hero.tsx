@@ -42,21 +42,39 @@ export function Hero({ dict }: { dict: Dictionary['hero'] }) {
           priority
           {...{ [PARALLAX_ATTR]: 'subtle', [PARALLAX_ZOOM_ATTR]: '' }}
           /*
-            El encuadre se corre a la derecha a medida que la pantalla se
-            angosta: a 1440 la figura queda al costado del texto, pero en un
-            teléfono ese mismo encuadre la mete justo debajo del titular. Cuanto
-            menos ancho, más hacia afuera.
+            El encuadre se corre hacia la IZQUIERDA a medida que la pantalla se
+            angosta.
+
+            La figura ocupa la mitad derecha de la imagen original (x≈52%–89%).
+            En un teléfono, `object-cover` sobre un contenedor alto recorta
+            tantísimo el ancho —se ve cerca del 39%— que un encuadre alto deja
+            el casco ocupando toda la pantalla, justo detrás del texto. Bajarlo
+            corre esa ventana hacia la zona vacía y deja a la figura entrando
+            por el borde derecho.
           */
-          className="absolute inset-0 -z-10 size-full object-cover object-[90%_center] sm:object-[82%_center] lg:object-[72%_center]"
+          className="absolute inset-0 -z-10 size-full object-cover object-[38%_center] sm:object-[60%_center] lg:object-[72%_center]"
         />
         {/*
           En desktop la imagen ya es clara del lado del texto, así que no lleva
           velo. En pantallas chicas la figura queda por detrás del texto, y ahí
           el velo es lo que sostiene el contraste.
         */}
+        {/*
+          Dos velos, y hacen falta los dos.
+
+          El horizontal aclara el lado del texto. El vertical cubre el caso en
+          que la figura igual asome por detrás de las líneas largas del titular:
+          un degradado en un solo eje deja siempre una diagonal sin cubrir.
+
+          En desktop no van: ahí la imagen ya es clara del lado del texto.
+        */}
         <div
           aria-hidden
-          className="from-canvas/92 absolute inset-0 -z-10 bg-gradient-to-r via-canvas/60 to-canvas/10 lg:hidden"
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-canvas via-canvas/85 to-canvas/25 lg:hidden"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-canvas/70 via-canvas/40 to-transparent lg:hidden"
         />
 
         {/*
