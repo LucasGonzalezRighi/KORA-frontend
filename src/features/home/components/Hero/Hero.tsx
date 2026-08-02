@@ -41,16 +41,22 @@ export function Hero({ dict }: { dict: Dictionary['hero'] }) {
           height={HERO_IMAGE_HEIGHT}
           priority
           {...{ [PARALLAX_ATTR]: 'subtle', [PARALLAX_ZOOM_ATTR]: '' }}
-          className="absolute inset-0 -z-10 size-full object-cover object-[72%_center]"
+          /*
+            El encuadre se corre a la derecha a medida que la pantalla se
+            angosta: a 1440 la figura queda al costado del texto, pero en un
+            teléfono ese mismo encuadre la mete justo debajo del titular. Cuanto
+            menos ancho, más hacia afuera.
+          */
+          className="absolute inset-0 -z-10 size-full object-cover object-[90%_center] sm:object-[82%_center] lg:object-[72%_center]"
         />
         {/*
           En desktop la imagen ya es clara del lado del texto, así que no lleva
-          velo. En pantallas chicas la figura se corre hacia el texto, y ahí sí
-          se aclara el fondo para no perder contraste.
+          velo. En pantallas chicas la figura queda por detrás del texto, y ahí
+          el velo es lo que sostiene el contraste.
         */}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-canvas/75 via-canvas/30 to-transparent lg:hidden"
+          className="from-canvas/92 absolute inset-0 -z-10 bg-gradient-to-r via-canvas/60 to-canvas/10 lg:hidden"
         />
 
         {/*
@@ -59,7 +65,7 @@ export function Hero({ dict }: { dict: Dictionary['hero'] }) {
         */}
         <div
           {...{ [PARALLAX_ATTR]: 'medium' }}
-          className="flex min-h-[540px] flex-col justify-center gap-6 px-card-gutter pb-16 pt-40 lg:min-h-[860px] lg:pb-28"
+          className="flex min-h-[560px] flex-col justify-center gap-7 px-card-gutter pb-20 pt-36 sm:gap-6 sm:pt-40 lg:min-h-[860px] lg:pb-28"
         >
           <p className="font-mono text-base tracking-tight text-heading">{dict.eyebrow}</p>
 
@@ -76,7 +82,12 @@ export function Hero({ dict }: { dict: Dictionary['hero'] }) {
             {dict.subtitle}
           </p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-4">
+          {/*
+            En mobile los tres CTA se apilan. En una sola fila se partían en un
+            2+1 que se leía como un error de maquetado; apilados se leen como lo
+            que son, tres opciones.
+          */}
+          <div className="mt-2 flex flex-col items-start gap-3 sm:mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             {ctas.map((cta) => (
               <LinkButton key={cta.href} href={cta.href} variant={cta.variant} size="md">
                 {cta.label}

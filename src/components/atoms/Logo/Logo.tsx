@@ -90,7 +90,11 @@ export function Logo({ locale, className }: { locale: Locale; className?: string
       onMouseEnter={emit}
       className="shrink-0 rounded-sm focus-visible:shadow-focus focus-visible:outline-none"
     >
-      <KoraWordmark className={cn('h-[42px] w-[118px]', className)} />
+      {/*
+        Más chico en mobile: con el CTA ahora presente en la barra, a 375px el
+        logo a tamaño completo dejaba al botón sin lugar.
+      */}
+      <KoraWordmark className={cn('h-[32px] w-[90px] sm:h-[42px] sm:w-[118px]', className)} />
     </Link>
   );
 }

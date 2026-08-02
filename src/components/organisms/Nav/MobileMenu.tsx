@@ -2,10 +2,8 @@
 
 import Link from 'next/link';
 
-import { LinkButton } from '@/components/atoms/Button';
 import { Container } from '@/components/atoms/Container';
 import type { NavItem } from '@/constants/navigation';
-import { ANCHORS } from '@/constants/routes.app';
 import { useLocaleTransition } from '@/features/locale-transition';
 import { LOCALES, type Locale } from '@/i18n/config';
 import { cn } from '@/utils/cn';
@@ -14,7 +12,6 @@ import { NAV_LINK_CLASSES } from './Nav.styles';
 
 type MobileMenuProps = {
   items: readonly NavItem[];
-  ctaLabel: string;
   languageLabel: string;
   locale: Locale;
   localeHrefFor: (locale: Locale) => string;
@@ -24,7 +21,6 @@ type MobileMenuProps = {
 /** Panel desplegable del nav en pantallas chicas. */
 export function MobileMenu({
   items,
-  ctaLabel,
   languageLabel,
   locale,
   localeHrefFor,
@@ -87,16 +83,10 @@ export function MobileMenu({
             ))}
           </div>
         </div>
-
-        <LinkButton
-          href={ANCHORS.contacto}
-          variant="solid"
-          size="md"
-          onClick={onNavigate}
-          className="mt-6 self-start"
-        >
-          {ctaLabel}
-        </LinkButton>
+        {/*
+          Sin CTA acá: ahora vive en la barra del nav en todos los tamaños, y
+          repetirlo dentro del panel sería el mismo botón dos veces en pantalla.
+        */}
       </Container>
     </div>
   );

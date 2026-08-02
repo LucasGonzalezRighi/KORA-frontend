@@ -105,7 +105,7 @@ export function Nav({ locale, dict }: NavProps) {
             )}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <LocaleSwitcher
               current={locale}
               label={dict.nav.changeLanguage}
@@ -116,8 +116,19 @@ export function Nav({ locale, dict }: NavProps) {
               className="hidden lg:block"
             />
 
-            <Magnetic className="hidden sm:inline-flex">
-              <LinkButton href={ANCHORS.contacto} variant="solid" size="sm">
+            {/*
+              El CTA se muestra en todos los tamaños: en mobile la barra tenía
+              solo logo y hamburguesa, y la acción principal quedaba escondida
+              detrás de un menú que hay que abrir. En pantallas chicas va con
+              padding y tipografía reducidos para que entre sin apretar al logo.
+            */}
+            <Magnetic className="inline-flex">
+              <LinkButton
+                href={ANCHORS.contacto}
+                variant="solid"
+                size="sm"
+                className="px-3 text-xs sm:px-4 sm:text-sm"
+              >
                 {dict.nav.cta}
               </LinkButton>
             </Magnetic>
@@ -143,7 +154,6 @@ export function Nav({ locale, dict }: NavProps) {
       {isMobileOpen ? (
         <MobileMenu
           items={items}
-          ctaLabel={dict.nav.cta}
           languageLabel={dict.nav.changeLanguage}
           locale={locale}
           localeHrefFor={localeHrefFor}
