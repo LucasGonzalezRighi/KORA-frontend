@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { ROUTES_APP } from '@/constants/routes.app';
 import { SITE } from '@/constants/site';
 import { tokens } from '@/design-system';
-import { MOTION_MEDIA, gsap, useGSAP } from '@/hooks/animations/gsap';
+import { MOTION_MEDIA, gsap, useGSAP, motionIsReduced } from '@/hooks/animations/gsap';
 import type { Locale } from '@/i18n/config';
 import { cn } from '@/utils/cn';
 
@@ -32,7 +32,7 @@ export function Logo({ locale, className }: { locale: Locale; className?: string
 
   /** Un pulso del anillo. Reutilizado por la entrada y por el hover. */
   const emit = () => {
-    if (window.matchMedia(MOTION_MEDIA.reduced).matches) return;
+    if (motionIsReduced()) return;
 
     gsap.fromTo(
       `.${DOT_RING_CLASS}`,

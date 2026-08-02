@@ -1,11 +1,20 @@
 /**
- * Atributos que marcan las partes animables de un paso de la secuencia.
+ * Atributos que marcan las piezas de la secuencia de pasos.
  *
- * Cada parte se anima con su propio timing: el título con máscara, la regla
- * escalando, los bullets escalonados. Animar el bloque entero con una sola
- * opacidad es lo que hace que una transición se vea genérica.
+ * `track` y `stage` existen para que **el layout de superposición lo aplique el
+ * hook y no el CSS**. Es una lección aprendida a los golpes: si el apilado vive
+ * en clases (`lg:absolute`) y el ocultamiento en GSAP, cualquier motivo por el
+ * que GSAP no corra —movimiento reducido, un error, JS deshabilitado— deja los
+ * tres pasos visibles encima del otro y la sección ilegible.
+ *
+ * La regla: **el estado por defecto tiene que ser el legible**, y la animación
+ * opta por el layout riesgoso. Nunca al revés.
  */
 export const STEP = {
+  /** Contenedor que define el recorrido de scroll. */
+  track: 'data-sequence-track',
+  /** El escenario que queda fijo mientras los pasos se relevan. */
+  stage: 'data-sequence-stage',
   root: 'data-sequence-step',
   title: 'data-step-title',
   rule: 'data-step-rule',

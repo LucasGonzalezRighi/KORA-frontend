@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 
-import { POINTER_CONDITIONS, type MotionConditions, gsap, useGSAP } from './gsap';
+import { POINTER_CONDITIONS, type MotionConditions, gsap, useGSAP, motionIsReduced } from './gsap';
 
 type TiltOptions = {
   /** Inclinación máxima en grados. Bajo a propósito: de más, marea. */
@@ -34,7 +34,7 @@ export function useTilt<T extends HTMLElement = HTMLElement>(options: TiltOption
 
       mm.add(POINTER_CONDITIONS, (context) => {
         const { hasFinePointer, prefersReduced } = context.conditions as MotionConditions;
-        if (!hasFinePointer || prefersReduced) return;
+        if (!hasFinePointer || motionIsReduced(prefersReduced)) return;
 
         const settings = { duration: 0.6, ease: 'power3.out' };
         const rotateX = gsap.quickTo(element, 'rotationX', settings);

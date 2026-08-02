@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 
 import { tokens } from '@/design-system';
-import { MOTION_MEDIA, gsap, useGSAP } from '@/hooks/animations/gsap';
+import { gsap, useGSAP, motionIsReduced } from '@/hooks/animations/gsap';
 import { cn } from '@/utils/cn';
 
 /** Espacio duro: un espacio normal se colapsa al partir la etiqueta en spans. */
@@ -35,7 +35,7 @@ export function useLabelSwap<T extends HTMLElement>() {
     () => {
       const root = ref.current;
       if (!root) return;
-      if (window.matchMedia(MOTION_MEDIA.reduced).matches) return;
+      if (motionIsReduced()) return;
 
       const { durations, easings } = tokens.motion;
       const shared = { duration: durations.fast, ease: easings.outQuart, stagger: 0.018 };

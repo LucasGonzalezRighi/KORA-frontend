@@ -44,6 +44,36 @@ export const MOTION_MEDIA = {
   finePointer: '(any-hover: hover) and (any-pointer: fine)',
 } as const;
 
+/**
+ * Si el sitio respeta o no la preferencia de movimiento reducido del sistema.
+ *
+ * **Está en `false` por decisión del producto.** El motivo práctico: en Windows
+ * esa preferencia se activa sola con el ahorro de batería, así que buena parte
+ * de quienes la tienen puesta nunca la eligieron, y el sitio se les veía
+ * completamente estático sin que supieran por qué.
+ *
+ * La contrapartida hay que decirla: para quien sí la eligió —por vértigo o
+ * migraña— el movimiento deja de ser opcional. Por eso el interruptor en la
+ * interfaz deja de ser un lujo y pasa a ser la única salida que le queda a esa
+ * persona.
+ *
+ * Este es el único lugar donde se decide. Ponerlo en `true` devuelve el
+ * comportamiento respetuoso sin tocar ningún hook.
+ */
+export const RESPECT_OS_REDUCED_MOTION = false;
+
+/**
+ * Resuelve si hay que reducir el movimiento, aplicando la política de arriba.
+ *
+ * Los hooks preguntan por acá y no por la media query directamente, para que la
+ * decisión viva en un solo lugar.
+ */
+export function motionIsReduced(fromConditions?: boolean): boolean {
+  if (!RESPECT_OS_REDUCED_MOTION) return false;
+  if (typeof fromConditions === 'boolean') return fromConditions;
+  return typeof window !== 'undefined' && window.matchMedia(MOTION_MEDIA.reduced).matches;
+}
+
 export type MotionConditions = {
   isDesktop?: boolean;
   isMobile?: boolean;

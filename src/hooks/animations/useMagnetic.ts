@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import { tokens } from '@/design-system';
 
-import { POINTER_CONDITIONS, type MotionConditions, gsap, useGSAP } from './gsap';
+import { POINTER_CONDITIONS, type MotionConditions, gsap, useGSAP, motionIsReduced } from './gsap';
 
 type MagneticOptions = {
   /** Fracción de la distancia al cursor que el elemento se deja arrastrar. */
@@ -46,7 +46,7 @@ export function useMagnetic<T extends HTMLElement = HTMLElement>(options: Magnet
 
       mm.add(POINTER_CONDITIONS, (context) => {
         const { hasFinePointer, prefersReduced } = context.conditions as MotionConditions;
-        if (!hasFinePointer || prefersReduced) return;
+        if (!hasFinePointer || motionIsReduced(prefersReduced)) return;
 
         const moveX = gsap.quickTo(element, 'x', { duration: 0.5, ease: 'power3.out' });
         const moveY = gsap.quickTo(element, 'y', { duration: 0.5, ease: 'power3.out' });

@@ -32,7 +32,9 @@ function resolvePreferredLocale(header: string | null): string {
     .map((part) => part.split(';')[0]?.trim().slice(0, 2).toLowerCase())
     .filter((code): code is string => Boolean(code));
 
-  return requested.find((code) => (LOCALE_CODES as readonly string[]).includes(code)) ?? DEFAULT_LOCALE;
+  return (
+    requested.find((code) => (LOCALE_CODES as readonly string[]).includes(code)) ?? DEFAULT_LOCALE
+  );
 }
 
 export const config = {

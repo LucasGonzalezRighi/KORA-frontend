@@ -17,11 +17,7 @@ export function AmbientGlow() {
   const ref = useParallax<HTMLDivElement>({ start: 'top top', end: 'bottom bottom' });
 
   return (
-    <div
-      ref={ref}
-      aria-hidden
-      className="pointer-events-none fixed inset-0 -z-50 overflow-hidden"
-    >
+    <div ref={ref} aria-hidden className="pointer-events-none fixed inset-0 -z-50 overflow-hidden">
       <div
         {...{ [PARALLAX_ATTR]: 'strong' }}
         className="absolute inset-x-0 -top-1/4 h-[150%] bg-glow-page"

@@ -30,7 +30,7 @@ export function SequenceIndex({ items, activeIndex, progress }: SequenceIndexPro
       {/* Riel de progreso — solo tiene sentido cuando hay secuencia (desktop). */}
       <div
         aria-hidden
-        className="relative hidden w-px shrink-0 overflow-hidden bg-hairline lg:block"
+        className="bg-hairline relative hidden w-px shrink-0 overflow-hidden lg:block"
       >
         <span
           className="absolute inset-x-0 top-0 block bg-accent transition-[height] duration-150 ease-out"
@@ -48,7 +48,7 @@ export function SequenceIndex({ items, activeIndex, progress }: SequenceIndexPro
                 aria-hidden
                 className={cn(
                   'block size-[13px] shrink-0 transition-all duration-300 ease-out',
-                  isActive ? 'scale-100 bg-accent' : 'scale-75 bg-hairline',
+                  isActive ? 'scale-100 bg-accent' : 'bg-hairline scale-75',
                 )}
               />
               <span

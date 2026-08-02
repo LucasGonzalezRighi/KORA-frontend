@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import { tokens } from '@/design-system';
 
-import { MOTION_CONDITIONS, type MotionConditions, gsap, useGSAP } from './gsap';
+import { MOTION_CONDITIONS, type MotionConditions, gsap, useGSAP, motionIsReduced } from './gsap';
 
 /** Atributo que marca una capa de parallax y con qué profundidad. */
 export const PARALLAX_ATTR = 'data-parallax';
@@ -37,9 +37,7 @@ type ParallaxOptions = {
  * rompe con la barra de direcciones de iOS, que cambia la altura del viewport
  * mientras scroleás.
  */
-export function useParallax<T extends HTMLElement = HTMLDivElement>(
-  options: ParallaxOptions = {},
-) {
+export function useParallax<T extends HTMLElement = HTMLDivElement>(options: ParallaxOptions = {}) {
   const containerRef = useRef<T>(null);
   const { start = 'top top', end = 'bottom top', triggerSelf = false } = options;
 
@@ -52,7 +50,7 @@ export function useParallax<T extends HTMLElement = HTMLDivElement>(
 
       mm.add(MOTION_CONDITIONS, (context) => {
         const { isDesktop, prefersReduced } = context.conditions as MotionConditions;
-        if (!isDesktop || prefersReduced) return;
+        if (!isDesktop || motionIsReduced(prefersReduced)) return;
 
         const layers = gsap.utils.toArray<HTMLElement>(`[${PARALLAX_ATTR}]`);
         if (layers.length === 0) return;

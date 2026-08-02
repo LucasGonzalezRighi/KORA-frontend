@@ -34,7 +34,11 @@ export function BlogSection({ locale, dict, newsletterDict }: BlogSectionProps) 
       <Container>
         <div ref={containerRef} className="flex flex-col gap-16">
           <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
-            <SectionHeading eyebrow={dict.eyebrow} title={dict.title} className={REVEAL_ITEM_CLASS} />
+            <SectionHeading
+              eyebrow={dict.eyebrow}
+              title={dict.title}
+              className={REVEAL_ITEM_CLASS}
+            />
             <LinkButton
               href={ROUTES_APP.blog(locale)}
               variant="outline"

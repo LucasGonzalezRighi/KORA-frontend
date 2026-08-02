@@ -14,13 +14,7 @@ import { useMagnetic } from '@/hooks/animations';
  *
  * Reservado para los CTA principales. En todos los botones, cansa.
  */
-export function Magnetic({
-  className,
-  children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
+export function Magnetic({ className, children }: { className?: string; children: ReactNode }) {
   const ref = useMagnetic<HTMLSpanElement>();
 
   return (

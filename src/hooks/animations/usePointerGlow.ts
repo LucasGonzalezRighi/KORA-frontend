@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 
-import { POINTER_CONDITIONS, type MotionConditions, gsap, useGSAP } from './gsap';
+import { POINTER_CONDITIONS, type MotionConditions, gsap, useGSAP, motionIsReduced } from './gsap';
 
 /**
  * Variables CSS que el hook actualiza. El gradiente las lee desde la hoja de
@@ -31,7 +31,7 @@ export function usePointerGlow<T extends HTMLElement = HTMLDivElement>() {
 
       mm.add(POINTER_CONDITIONS, (context) => {
         const { hasFinePointer, prefersReduced } = context.conditions as MotionConditions;
-        if (!hasFinePointer || prefersReduced) return;
+        if (!hasFinePointer || motionIsReduced(prefersReduced)) return;
 
         /*
          * Se anima un objeto intermedio y NO la variable CSS directamente.

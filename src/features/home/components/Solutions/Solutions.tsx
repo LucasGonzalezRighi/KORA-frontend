@@ -17,13 +17,6 @@ type SolutionsProps = {
 };
 
 /**
- * Altura de scroll de la secuencia en desktop: una pantalla y media por unidad.
- * Más de `100vh` por paso da aire para que la fase de lectura se sienta como
- * lectura y no como una pausa apurada. Si se agrega una unidad, sumar `150vh`.
- */
-const SEQUENCE_HEIGHT = 'lg:h-[450vh]';
-
-/**
  * "Una sola mirada de ingeniería" + las tres unidades de negocio.
  *
  * En desktop las unidades se relevan coreografiadas mientras la sección queda
@@ -51,20 +44,22 @@ export function Solutions({ locale, dict }: SolutionsProps) {
         </div>
       </Container>
 
-      <div ref={containerRef} className={`relative mt-24 ${SEQUENCE_HEIGHT}`}>
-        <div className="lg:sticky lg:top-0 lg:flex lg:h-screen lg:items-center">
+      {/*
+        Sin clases de superposición acá a propósito: por defecto los pasos van
+        apilados en flujo normal, que es el estado legible. El layout de
+        secuencia —alto del recorrido, `sticky`, pasos absolutos— lo aplica
+        `useStickySequence` solo cuando la animación efectivamente corre. Si no
+        corre, la sección se lee igual en vez de quedar los tres encimados.
+      */}
+      <div ref={containerRef} {...{ [STEP.track]: '' }} className="relative mt-24">
+        <div {...{ [STEP.stage]: '' }}>
           <Container>
             <div className="grid gap-12 lg:grid-cols-[minmax(0,14rem)_1fr] lg:gap-16">
               <SequenceIndex items={indexItems} activeIndex={activeIndex} progress={progress} />
 
-              {/* En desktop los pasos comparten lugar; en mobile van en columna. */}
-              <div className="relative flex flex-col gap-24 lg:block lg:h-[24rem]">
+              <div className="flex flex-col gap-24">
                 {BUSINESS_UNIT_IDS.map((id) => (
-                  <div
-                    key={id}
-                    {...{ [STEP.root]: '' }}
-                    className="lg:absolute lg:inset-x-0 lg:top-0"
-                  >
+                  <div key={id} {...{ [STEP.root]: '' }}>
                     <BusinessUnitBlock
                       title={dict.units[id].title}
                       description={dict.units[id].description}

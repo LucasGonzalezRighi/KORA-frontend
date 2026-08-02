@@ -39,5 +39,10 @@ export function buttonClasses(
   size: ButtonSize = 'md',
   className?: string,
 ): string {
-  return cn(BASE, VARIANTS[variant], variant === 'icon' ? ICON_SIZES[size] : SIZES[size], className);
+  return cn(
+    BASE,
+    VARIANTS[variant],
+    variant === 'icon' ? ICON_SIZES[size] : SIZES[size],
+    className,
+  );
 }

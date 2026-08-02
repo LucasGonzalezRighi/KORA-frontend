@@ -123,4 +123,3 @@ export const choreographyEase = {
   enter: 'power3.out',
   exit: 'power2.in',
 } as const;
-

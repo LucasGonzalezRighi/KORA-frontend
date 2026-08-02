@@ -11,6 +11,7 @@ import {
   gsap,
   useGSAP,
   whenFontsReady,
+  motionIsReduced,
 } from './gsap';
 
 type TextRevealOptions = {
@@ -65,7 +66,7 @@ export function useTextReveal<T extends HTMLElement = HTMLHeadingElement>(
          * preferencia pide evitar — y además partir el texto altera el DOM sin
          * necesidad. Con un fundido el titular igual "llega", no aparece de golpe.
          */
-        if (prefersReduced) {
+        if (motionIsReduced(prefersReduced)) {
           const { reducedMotion } = tokens.motion;
           gsap.from(element, {
             opacity: 0,
@@ -89,9 +90,7 @@ export function useTextReveal<T extends HTMLElement = HTMLHeadingElement>(
                 ease: tokens.motion.easings.outExpoSoft,
                 stagger: isDesktop ? tokens.motion.staggers.base : tokens.motion.staggers.tight,
                 delay,
-                ...(immediate
-                  ? {}
-                  : { scrollTrigger: { trigger: element, start, once: true } }),
+                ...(immediate ? {} : { scrollTrigger: { trigger: element, start, once: true } }),
               }),
           });
         });

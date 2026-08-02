@@ -7,7 +7,13 @@ import { Section } from '@/components/atoms/Section';
 import { SECTION_IDS } from '@/constants/routes.app';
 import { METHOD_STEP_IDS } from '@/features/home/data/method';
 import { tokens } from '@/design-system';
-import { MOTION_CONDITIONS, type MotionConditions, gsap, useGSAP } from '@/hooks/animations/gsap';
+import {
+  MOTION_CONDITIONS,
+  type MotionConditions,
+  gsap,
+  useGSAP,
+  motionIsReduced,
+} from '@/hooks/animations/gsap';
 import type { Dictionary } from '@/i18n';
 
 import { MethodPath } from './MethodPath';
@@ -48,7 +54,7 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
 
       mm.add(MOTION_CONDITIONS, (context) => {
         const { isDesktop, prefersReduced } = context.conditions as MotionConditions;
-        if (prefersReduced) return;
+        if (motionIsReduced(prefersReduced)) return;
 
         const { durations, easings, choreography } = tokens.motion;
 

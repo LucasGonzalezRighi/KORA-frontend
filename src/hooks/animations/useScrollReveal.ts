@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 import { tokens } from '@/design-system';
 
-import { MOTION_CONDITIONS, type MotionConditions, gsap, useGSAP } from './gsap';
+import { MOTION_CONDITIONS, type MotionConditions, gsap, useGSAP, motionIsReduced } from './gsap';
 
 /** Clase que marca los elementos que entran escalonados dentro del contenedor. */
 export const REVEAL_ITEM_CLASS = 'kora-reveal';
@@ -47,7 +47,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
         const trigger = { trigger: containerRef.current, start, once: true };
 
         // Movimiento reducido: se conserva el fundido, se saca el desplazamiento.
-        if (prefersReduced) {
+        if (motionIsReduced(prefersReduced)) {
           gsap.from(items, {
             opacity: 0,
             duration: reducedMotion.duration,
