@@ -10,6 +10,11 @@ import { useId } from 'react';
  *
  * Debajo queda una copia tenue del mismo trazo, para que se lea el recorrido
  * completo antes de que la parte ámbar lo alcance.
+ *
+ * Encima viajan los puntos de `.kora-path-flow`. No se mueven solos: `Method`
+ * los manda por `data-method-flow-path` con MotionPath. Arrancan en `opacity 0`
+ * a propósito — si GSAP no corre, no queda un punto suelto pegado a la
+ * izquierda de la línea.
  */
 
 const VIEW_W = 1200;
@@ -20,6 +25,14 @@ const PATH = 'M150 60 Q250 24 350 60 T550 60 T750 60 T950 60 T1150 60';
 
 const DASH = '2 9';
 const STROKE = 2.5;
+
+/**
+ * Cuántos puntos recorren la línea a la vez.
+ *
+ * Tres es lo que hace que se lea como un flujo continuo: con uno se siente un
+ * evento aislado, y con más el recorrido se convierte en una fila de luces.
+ */
+const FLOW_DOTS = 3;
 
 export function MethodPath({ className }: { className?: string }) {
   const maskId = useId();
@@ -48,6 +61,7 @@ export function MethodPath({ className }: { className?: string }) {
 
       <path
         d={PATH}
+        data-method-flow-path
         fill="none"
         strokeDasharray={DASH}
         strokeLinecap="round"
@@ -63,6 +77,17 @@ export function MethodPath({ className }: { className?: string }) {
         mask={`url(#${maskId})`}
         className="stroke-accent"
       />
+
+      {Array.from({ length: FLOW_DOTS }, (_, index) => (
+        <circle
+          key={`flow-${index}`}
+          cx="0"
+          cy="0"
+          r="4"
+          opacity="0"
+          className="kora-path-flow fill-accent"
+        />
+      ))}
     </svg>
   );
 }

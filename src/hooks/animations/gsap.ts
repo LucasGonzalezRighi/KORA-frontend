@@ -2,6 +2,7 @@
 
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 
@@ -13,10 +14,10 @@ import { SplitText } from 'gsap/SplitText';
  * archivo. Registrar dos veces no rompe, pero dispersa la dependencia.
  */
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
+  gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, MotionPathPlugin);
 }
 
-export { gsap, ScrollTrigger, SplitText, useGSAP };
+export { gsap, MotionPathPlugin, ScrollTrigger, SplitText, useGSAP };
 
 /**
  * Condiciones de `gsap.matchMedia()`.
