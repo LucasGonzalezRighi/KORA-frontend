@@ -1,6 +1,6 @@
 # Kora 2.0
 
-Sitio institucional de **Kora Advisory** — consultoría de procesos, digitalización e IA aplicada para PyMEs y startups.
+Sitio institucional de **Kora Advisory** — consultoría de procesos de IA, digitalización e IA aplicada para PyMEs y startups.
 
 Next.js 15 (App Router) · TypeScript estricto · Tailwind sobre un design system propio · GSAP.
 
