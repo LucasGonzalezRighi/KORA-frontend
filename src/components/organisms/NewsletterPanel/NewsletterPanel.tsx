@@ -60,6 +60,20 @@ export function NewsletterPanel({ dict }: { dict: Dictionary['newsletter'] }) {
             size="md"
             disabled={isSubmitting}
             aria-label={dict.submitLabel}
+            /*
+              `shrink-0` no es cosmético: sin él esto no es un círculo.
+
+              El input de al lado es `w-full`, así que pide el 100% del ancho.
+              Sumado al `gap` supera lo disponible, y flexbox reparte el
+              achicamiento entre *los dos* hijos. El input se banca perder ancho;
+              el botón no, y se comprime en horizontal sin perder alto. Medido en
+              un viewport de 391px: renderizaba 38×62 en vez de 62×62, un óvalo
+              parado. `shrink-0` lo saca del reparto.
+
+              El `size-[61px]` en móvil es aparte: iguala exactamente el alto del
+              input (`h-[61px]`), que quedaba un pixel más bajo que el botón.
+            */
+            className="size-[61px] shrink-0 sm:size-[62px]"
           >
             <ArrowRight aria-hidden className="size-6" />
           </Button>

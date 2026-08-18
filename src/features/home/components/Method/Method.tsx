@@ -23,6 +23,15 @@ import { ICON_ORIGIN, MethodStepIcon } from './MethodStepIcon';
 const STEP_SPAN = 1 / METHOD_STEP_IDS.length;
 
 /**
+ * Cuándo entra el diagrama dentro del reveal de un paso en móvil.
+ *
+ * No arranca en 0 a propósito: primero sube el bloque y recién después se
+ * dibuja el diagrama. Que las dos cosas pasen juntas se lee como un solo
+ * fundido; escalonadas se leen como que el paso *se está armando*.
+ */
+const MOBILE_MARK_AT = 0.18;
+
+/**
  * Ritmo de la capa de ambiente.
  *
  * **Estos números no son a gusto: son los `@keyframes` del prototipo HTML,
@@ -97,6 +106,13 @@ const AMBIENT = {
  * medio de la pantalla, no cuando ya te fuiste: la línea se completa mientras
  * la estás mirando.
  *
+ * **Todo eso es la versión de desktop, donde los cuatro pasos entran juntos en
+ * pantalla.** En móvil van apilados y la lista mide varias pantallas, así que
+ * agrupar por sección deja de tener sentido: un disparador único arranca con el
+ * paso 1 y anima también al 3 y al 4, que todavía están muy abajo. Cuando
+ * llegás, ya pasó todo. Por eso la rama de móvil dispara **por columna** y cada
+ * paso enciende su propio ambiente al entrar.
+ *
  * **Por qué las capas 2 y 3 no comparten elemento.** El scrub anima la escala de
  * `.kora-node-mark`, y la vuelve a fijar en cada scroll. Un bucle de
  * ambiente sobre la misma propiedad del mismo nodo quedaría pisado. Por eso los
@@ -117,99 +133,184 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
         const { isDesktop, prefersReduced } = context.conditions as MotionConditions;
         if (motionIsReduced(prefersReduced)) return;
 
-        const { durations, easings, choreography } = tokens.motion;
+        const { durations, easings, choreography, staggers, revealOffset } = tokens.motion;
 
-        // — Capa 3: el ambiente. Se arma en pausa; la capa 1 le da el arranque. —
-        const ambient: gsap.core.Animation[] = [];
+        /**
+         * Arma los bucles de ambiente de un diagrama y los devuelve en pausa.
+         *
+         * Recibe la raíz por parámetro en vez de usar `scope` porque los dos
+         * breakpoints los agrupan distinto: en desktop los cuatro pasos están
+         * uno al lado del otro y arrancan juntos; en móvil cada paso enciende el
+         * suyo cuando entra en pantalla. Misma coreografía, distinto reparto.
+         */
+        const buildAmbient = (root: ParentNode) => {
+          const loops: gsap.core.Animation[] = [];
 
-        const flicker = scope.querySelectorAll('.kora-node-flicker');
-        if (flicker.length) {
-          ambient.push(
-            gsap.to(flicker, {
-              opacity: AMBIENT.flickerOpacity,
-              duration: AMBIENT.flickerDuration,
-              ease: easings.inOut,
-              repeat: -1,
-              yoyo: true,
-              paused: true,
-              stagger: { each: AMBIENT.flickerStagger, from: 'start' },
-            }),
-          );
-        }
-
-        const orbit = scope.querySelectorAll('.kora-node-orbit');
-        if (orbit.length) {
-          ambient.push(
-            gsap.to(orbit, {
-              rotation: 360,
-              svgOrigin: ICON_ORIGIN,
-              duration: AMBIENT.orbitDuration,
-              ease: 'none',
-              repeat: -1,
-              paused: true,
-            }),
-          );
-        }
-
-        const breathe = scope.querySelectorAll('.kora-node-breathe');
-        if (breathe.length) {
-          ambient.push(
-            gsap.to(breathe, {
-              scale: AMBIENT.breatheScale,
-              opacity: AMBIENT.breatheOpacity,
-              transformOrigin: 'center',
-              duration: AMBIENT.breatheDuration,
-              ease: easings.inOut,
-              repeat: -1,
-              yoyo: true,
-              paused: true,
-            }),
-          );
-        }
-
-        const pulse = scope.querySelectorAll('.kora-node-pulse');
-        if (pulse.length) {
-          ambient.push(
-            gsap.fromTo(
-              pulse,
-              {
-                scale: AMBIENT.pulseFromScale,
-                opacity: AMBIENT.pulseFromOpacity,
-                /*
-                  El `svgOrigin` va acá **y** abajo, y no es repetición al pedo.
-
-                  En un `fromTo`, GSAP renderiza el estado inicial apenas se crea
-                  el tween. Ese primer render es el que fija el origen de la
-                  transformación, y si solo está declarado del lado `to` todavía
-                  no lo leyó: cae en el default y escala desde la esquina de la
-                  caja. Los halos quedan corridos ~13px arriba a la izquierda,
-                  descentrados del anillo, y lo peor es que no se mueven — quedan
-                  quietos ahí, así que parece un error de maquetado y no de
-                  animación. Medido, no supuesto.
-
-                  La capa 2 acá abajo ya lo hace bien con su `transformOrigin`.
-                */
-                svgOrigin: ICON_ORIGIN,
-              },
-              {
-                scale: AMBIENT.pulseToScale,
-                opacity: AMBIENT.pulseToOpacity,
-                svgOrigin: ICON_ORIGIN,
-                duration: AMBIENT.pulseDuration,
+          const flicker = root.querySelectorAll('.kora-node-flicker');
+          if (flicker.length) {
+            loops.push(
+              gsap.to(flicker, {
+                opacity: AMBIENT.flickerOpacity,
+                duration: AMBIENT.flickerDuration,
                 ease: easings.inOut,
                 repeat: -1,
                 yoyo: true,
                 paused: true,
-                stagger: { each: AMBIENT.pulseStagger, from: 'end' },
-              },
-            ),
-          );
-        }
+                stagger: { each: AMBIENT.flickerStagger, from: 'start' },
+              }),
+            );
+          }
+
+          const orbit = root.querySelectorAll('.kora-node-orbit');
+          if (orbit.length) {
+            loops.push(
+              gsap.to(orbit, {
+                rotation: 360,
+                svgOrigin: ICON_ORIGIN,
+                duration: AMBIENT.orbitDuration,
+                ease: 'none',
+                repeat: -1,
+                paused: true,
+              }),
+            );
+          }
+
+          const breathe = root.querySelectorAll('.kora-node-breathe');
+          if (breathe.length) {
+            loops.push(
+              gsap.to(breathe, {
+                scale: AMBIENT.breatheScale,
+                opacity: AMBIENT.breatheOpacity,
+                transformOrigin: 'center',
+                duration: AMBIENT.breatheDuration,
+                ease: easings.inOut,
+                repeat: -1,
+                yoyo: true,
+                paused: true,
+              }),
+            );
+          }
+
+          const pulse = root.querySelectorAll('.kora-node-pulse');
+          if (pulse.length) {
+            loops.push(
+              gsap.fromTo(
+                pulse,
+                {
+                  scale: AMBIENT.pulseFromScale,
+                  opacity: AMBIENT.pulseFromOpacity,
+                  /*
+                    El `svgOrigin` va acá **y** abajo, y no es repetición al pedo.
+
+                    En un `fromTo`, GSAP renderiza el estado inicial apenas se
+                    crea el tween. Ese primer render es el que fija el origen de
+                    la transformación, y si solo está declarado del lado `to`
+                    todavía no lo leyó: cae en el default y escala desde la
+                    esquina de la caja. Los halos quedan corridos ~13px arriba a
+                    la izquierda, descentrados del anillo, y lo peor es que no se
+                    mueven — quedan quietos ahí, así que parece un error de
+                    maquetado y no de animación. Medido, no supuesto.
+
+                    La capa 2 más abajo ya lo hace bien con su `transformOrigin`.
+                  */
+                  svgOrigin: ICON_ORIGIN,
+                },
+                {
+                  scale: AMBIENT.pulseToScale,
+                  opacity: AMBIENT.pulseToOpacity,
+                  svgOrigin: ICON_ORIGIN,
+                  duration: AMBIENT.pulseDuration,
+                  ease: easings.inOut,
+                  repeat: -1,
+                  yoyo: true,
+                  paused: true,
+                  stagger: { each: AMBIENT.pulseStagger, from: 'end' },
+                },
+              ),
+            );
+          }
+
+          return loops;
+        };
+
+        const structureOf = (root: ParentNode) =>
+          root.querySelectorAll('.kora-node-dot, .kora-node-ring, .kora-node-line');
+
+        const columns = scope.querySelectorAll<HTMLElement>('[data-method-step]');
 
         /*
-          Los puntos que viajan por la línea. Solo desktop: en mobile la línea
-          no se dibuja (`hidden lg:block`), pero sigue estando en el DOM, así que
-          sin esta condición GSAP animaría algo que nadie ve.
+          — Móvil: cada paso se cuenta solo. —
+
+          Acá los cuatro pasos van apilados, así que la lista mide varias
+          pantallas de alto. Un único disparador sobre el `<ol>` —que es lo que
+          había— arranca cuando asoma el paso 1 y anima los cuatro de una: para
+          cuando llegás scrolleando al 3 y al 4, su animación ya pasó hace rato y
+          los encontrás quietos. La sección se sentía muerta justo en la mitad
+          que más se mira en teléfono.
+
+          La corrección es que el disparador sea por columna. De paso, la marca
+          ámbar recupera su entrada: antes en móvil se le hacía un `set` y
+          aparecía de golpe, porque la capa 2 que la anima es solo de desktop.
+        */
+        if (!isDesktop) {
+          columns.forEach((column) => {
+            const loops = buildAmbient(column);
+
+            gsap
+              .timeline({
+                scrollTrigger: { trigger: column, start: 'top 85%', once: true },
+                onComplete: () => loops.forEach((loop) => loop.play()),
+              })
+              /*
+                El bloque entero sube apenas: es lo que da la sensación de que
+                el paso *llega* en vez de estar ahí.
+
+                Los valores no son propios, son los que ya fija `useScrollReveal`
+                para móvil: recorrido más corto (`revealOffset * 0.6`), duración
+                `base` en vez de `reveal` y `staggers.tight`. Esa regla está
+                escrita en ese hook y dice por qué: la misma coreografía que en
+                desktop se siente elegante, en una pantalla angosta se siente
+                lenta, porque el recorrido ocupa proporcionalmente mucho más.
+              */
+              .from(
+                column.children,
+                {
+                  opacity: 0,
+                  y: revealOffset * 0.6,
+                  duration: durations.base,
+                  ease: easings.outExpoSoft,
+                  stagger: staggers.tight,
+                },
+                0,
+              )
+              .from(
+                structureOf(column),
+                {
+                  opacity: 0,
+                  duration: durations.base,
+                  ease: easings.outQuart,
+                  stagger: { each: 0.02, from: 'start' },
+                },
+                MOBILE_MARK_AT,
+              )
+              .fromTo(
+                column.querySelectorAll('.kora-node-mark'),
+                { scale: 0, opacity: 0, transformOrigin: 'center' },
+                { scale: 1, opacity: 1, duration: durations.base, ease: 'back.out(2.2)' },
+                MOBILE_MARK_AT + 0.1,
+              );
+          });
+
+          return;
+        }
+
+        // — Capa 3: el ambiente. Se arma en pausa; la capa 1 le da el arranque. —
+        const ambient = buildAmbient(scope);
+
+        /*
+          Los puntos que viajan por la línea. Viven solo en desktop: en móvil la
+          línea no se dibuja (`hidden lg:block`), pero sigue estando en el DOM,
+          así que sin esta rama GSAP animaría algo que nadie ve.
 
           Cada punto tiene su propia línea de tiempo en vez de un `stagger`
           compartido, porque el escalonado se siembra con `progress()`: eso los
@@ -219,7 +320,7 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
         const flowPath = scope.querySelector<SVGPathElement>('[data-method-flow-path]');
         const flowDots = scope.querySelectorAll<SVGCircleElement>('.kora-path-flow');
 
-        if (isDesktop && flowPath && flowDots.length) {
+        if (flowPath && flowDots.length) {
           flowDots.forEach((dot, index) => {
             const trip = gsap.timeline({ paused: true, repeat: -1 });
 
@@ -250,24 +351,17 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
           });
         }
 
-        const startAmbient = () => ambient.forEach((animation) => animation.play());
-
         // — Capa 1: la estructura, al entrar. Play-once, no atada al scroll. —
-        gsap.from(scope.querySelectorAll('.kora-node-dot, .kora-node-ring, .kora-node-line'), {
+        gsap.from(structureOf(scope), {
           opacity: 0,
           duration: durations.base,
           ease: easings.outQuart,
           stagger: { each: 0.012, from: 'start' },
           scrollTrigger: { trigger: scope, start: 'top 80%', once: true },
-          onComplete: startAmbient,
+          onComplete: () => ambient.forEach((animation) => animation.play()),
         });
 
-        // — Capa 2: la línea y los acentos, atadas al scroll. Solo desktop. —
-        if (!isDesktop) {
-          gsap.set(scope.querySelectorAll('.kora-node-mark'), { scale: 1, opacity: 1 });
-          return;
-        }
-
+        // — Capa 2: la línea y los acentos, atadas al scroll. —
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: scope,
@@ -282,7 +376,7 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
           timeline.fromTo(mask, { scaleX: 0 }, { scaleX: 1, ease: 'none', duration: 1 }, 0);
         }
 
-        scope.querySelectorAll<HTMLElement>('[data-method-step]').forEach((column) => {
+        columns.forEach((column) => {
           const index = Number(column.dataset.methodStep ?? 0);
           timeline.fromTo(
             column.querySelectorAll('.kora-node-mark'),

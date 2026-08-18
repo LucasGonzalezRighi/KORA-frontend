@@ -88,8 +88,20 @@ export const choreography = {
   enter: 0.75,
   /** Duración de una salida. Deliberadamente menos de la mitad. */
   exit: 0.32,
-  /** Cuánto se adelanta la entrada respecto del fin de la salida. */
-  overlap: 0.22,
+  /**
+   * Cuánto se adelanta la entrada respecto del fin de la salida.
+   *
+   * Bajado de 0.22 a 0.08 por un problema visible: con 0.22 el paso entrante
+   * arrancaba cuando al anterior le quedaba el 70% de su salida, así que durante
+   * buena parte del tramo había **dos títulos legibles encima del otro**. En
+   * movimiento continuo se disimula; frenando el scroll a mitad de camino —que
+   * es lo que hace cualquiera— se ve como texto fantasma y una regla cruzando
+   * la frase.
+   *
+   * No va a cero: el hueco muerto que menciona la regla 2 es real. 0.08 deja
+   * apenas el empalme, sin que las dos frases se puedan leer a la vez.
+   */
+  overlap: 0.08,
   /** Proporción del tramo en la que el paso queda quieto y legible. */
   dwell: 0.55,
   /**
@@ -100,6 +112,16 @@ export const choreography = {
    * inercia. Es el cambio más barato que separa lo amateur de lo profesional.
    */
   scrubSmoothing: 0.8,
+  /**
+   * Suavizado del scrub *de la secuencia de unidades*, más corto que el general.
+   *
+   * Existe separado porque ahí el scroll no mueve solo contenido: mueve también
+   * el riel de progreso del índice, que es la señal de "esto lo controlás vos".
+   * Con 0.8 el riel llegaba tarde respecto del dedo y la sección se sentía
+   * trabada — el mismo suavizado que en un parallax se lee como elegante, en un
+   * indicador de posición se lee como lag.
+   */
+  sequenceScrub: 0.45,
 } as const;
 
 /**

@@ -15,8 +15,16 @@ import {
 } from './gsap';
 import { STEP } from './sequenceParts';
 
-/** Cuánto scroll ocupa cada paso, en alturas de viewport. */
-const VH_PER_STEP = 150;
+/**
+ * Cuánto scroll ocupa cada paso, en alturas de viewport.
+ *
+ * Bajado de 150 a 110. Con 150 cada unidad pedía vuelta y media de pantalla
+ * para pasar a la siguiente, y como la mayor parte de ese tramo es `dwell`
+ * —tiempo en el que a propósito no se mueve nada— la sensación era de estar
+ * scrolleando contra algo trabado. 110 mantiene la pausa de lectura pero
+ * acorta la espera entre paso y paso.
+ */
+const VH_PER_STEP = 110;
 
 /** Alto del escenario donde se superponen los pasos. */
 const STAGE_HEIGHT = '24rem';
@@ -115,7 +123,7 @@ export function useStickySequence<T extends HTMLElement = HTMLDivElement>() {
           });
 
           const steps = roots.map(readParts);
-          const { enter, exit, overlap, dwell, scrubSmoothing } = tokens.motion.choreography;
+          const { enter, exit, overlap, dwell, sequenceScrub } = tokens.motion.choreography;
           const ease = tokens.motion.choreographyEase;
 
           // Estado inicial: solo el primer paso visible.
@@ -134,7 +142,7 @@ export function useStickySequence<T extends HTMLElement = HTMLDivElement>() {
               trigger: track,
               start: 'top top',
               end: 'bottom bottom',
-              scrub: scrubSmoothing,
+              scrub: sequenceScrub,
               onUpdate: ({ progress: value }) => {
                 setProgress(value);
                 setActiveIndex(

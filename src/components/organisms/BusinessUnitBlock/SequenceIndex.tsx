@@ -23,6 +23,12 @@ type SequenceIndexProps = {
  *
  * La barra de progreso es la señal de "esto lo maneja tu scroll": sin ella, que
  * la sección quede fija se siente como si la página se hubiera trabado.
+ *
+ * Su transición es corta y lineal a propósito. El scroll ya viene suavizado por
+ * el `scrub` de la secuencia; una transición larga acá se **suma** a esa demora
+ * en vez de reemplazarla, y el riel termina llegando notoriamente después del
+ * dedo. Los 75ms que quedan solo existen para que los saltos discretos del
+ * estado de React no se vean escalonados.
  */
 export function SequenceIndex({ items, activeIndex, progress }: SequenceIndexProps) {
   return (
@@ -33,12 +39,25 @@ export function SequenceIndex({ items, activeIndex, progress }: SequenceIndexPro
         className="bg-hairline relative hidden w-px shrink-0 overflow-hidden lg:block"
       >
         <span
-          className="absolute inset-x-0 top-0 block bg-accent transition-[height] duration-150 ease-out"
+          className="absolute inset-x-0 top-0 block bg-accent transition-[height] duration-75 ease-linear"
           style={{ height: `${Math.round(progress * 100)}%` }}
         />
       </div>
 
-      <ol className="flex flex-row flex-wrap gap-x-6 gap-y-3 lg:flex-col lg:gap-6">
+      {/*
+        En desktop el índice se centra en vez de quedar pegado al tope.
+
+        El grid le da al índice el alto completo del escenario (24rem), así que
+        alineado arriba las tres etiquetas quedaban apiladas en el borde
+        superior con un vacío grande abajo, y desalineadas respecto del bloque
+        de contenido, que sí está centrado. `justify-center` las pone a la misma
+        altura que la unidad que están indicando.
+
+        El `gap-10` es lo mismo mirado de otra forma: con `gap-6` las tres
+        entradas se leían como un bloque de texto de tres renglones y no como
+        tres destinos separados.
+      */}
+      <ol className="flex flex-row flex-wrap gap-x-6 gap-y-3 lg:flex-col lg:justify-center lg:gap-10">
         {items.map((item, index) => {
           const isActive = index === activeIndex;
 
