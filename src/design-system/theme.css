@@ -82,3 +82,64 @@
   --kora-duration-fast: 240ms;
   --kora-duration-base: 400ms;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   Bucles de los diagramas del método.
+
+   Portados tal cual del prototipo `kora_proceso_4_pasos.html`: mismos
+   keyframes, mismas duraciones, mismos desfases.
+
+   Van en CSS y no en GSAP porque así están en el prototipo. Nota para
+   quien los toque: una animación CSS **gana sobre el estilo inline**, así
+   que ningún elemento con estos bucles puede estar además animado por
+   GSAP — el bucle le pisaría cualquier tween.
+   ─────────────────────────────────────────────────────────────── */
+
+.kora-loop-orbit,
+.kora-loop-pulse {
+  /* Origen en unidades de usuario: los diagramas tienen viewBox 120. */
+  transform-origin: 60px 60px;
+}
+
+.kora-loop-orbit {
+  animation: kora-orbit 5s linear infinite;
+}
+
+.kora-loop-pulse {
+  animation: kora-pulse 2.6s ease-in-out infinite;
+}
+
+.kora-loop-fade {
+  animation: kora-fade 3.2s ease-in-out infinite;
+}
+
+.kora-loop-pop {
+  animation: kora-pop 2.8s ease-in-out infinite;
+}
+
+.kora-delay-1 { animation-delay: 0.25s; }
+.kora-delay-2 { animation-delay: 0.5s; }
+.kora-delay-3 { animation-delay: 0.75s; }
+.kora-delay-4 { animation-delay: 1s; }
+.kora-delay-5 { animation-delay: 1.25s; }
+.kora-delay-6 { animation-delay: 1.5s; }
+
+@keyframes kora-orbit {
+  from { transform: rotate(0deg) translateX(42px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(42px) rotate(-360deg); }
+}
+
+@keyframes kora-pulse {
+  0%, 100% { opacity: 0.12; transform: scale(0.7); }
+  50% { opacity: 0.5; transform: scale(1.08); }
+}
+
+@keyframes kora-fade {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes kora-pop {
+  0%, 100% { opacity: 0.55; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1); }
+}
