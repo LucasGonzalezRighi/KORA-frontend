@@ -10,6 +10,7 @@ import { tokens } from '@/design-system';
 import {
   MOTION_CONDITIONS,
   type MotionConditions,
+  ScrollTrigger,
   gsap,
   useGSAP,
   motionIsReduced,
@@ -358,7 +359,30 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
           ease: easings.outQuart,
           stagger: { each: 0.012, from: 'start' },
           scrollTrigger: { trigger: scope, start: 'top 80%', once: true },
-          onComplete: () => ambient.forEach((animation) => animation.play()),
+        });
+
+        /*
+          El ambiente tiene su propio disparador, y no cuelga del `onComplete`
+          de la capa 1.
+
+          Antes dependía de él, y eso lo hacía frágil por dos motivos: si esa
+          animación no completaba —targets vacíos, un refresh de ScrollTrigger a
+          destiempo— **ningún** bucle arrancaba nunca, sin error visible; y los
+          elementos del paso 1 están en las dos capas a la vez, así que el orden
+          entre una y otra decidía si el parpadeo se veía o no.
+
+          Con `toggleActions` los bucles además se pausan al salir de pantalla y
+          se reanudan al volver, que es lo que hacía falta para no tener cuatro
+          diagramas latiendo mientras el visitante lee otra sección.
+        */
+        ScrollTrigger.create({
+          trigger: scope,
+          start: 'top 90%',
+          end: 'bottom top',
+          onEnter: () => ambient.forEach((animation) => animation.play()),
+          onEnterBack: () => ambient.forEach((animation) => animation.play()),
+          onLeave: () => ambient.forEach((animation) => animation.pause()),
+          onLeaveBack: () => ambient.forEach((animation) => animation.pause()),
         });
 
         // — Capa 2: la línea y los acentos, atadas al scroll. —
