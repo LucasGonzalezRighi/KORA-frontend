@@ -45,19 +45,19 @@ export function SequenceIndex({ items, activeIndex, progress }: SequenceIndexPro
       </div>
 
       {/*
-        En desktop el índice se centra en vez de quedar pegado al tope.
+        En desktop las tres entradas se reparten en TODO el alto del escenario:
+        la primera arriba del todo, la última abajo del todo y la del medio
+        centrada.
 
-        El grid le da al índice el alto completo del escenario (24rem), así que
-        alineado arriba las tres etiquetas quedaban apiladas en el borde
-        superior con un vacío grande abajo, y desalineadas respecto del bloque
-        de contenido, que sí está centrado. `justify-center` las pone a la misma
-        altura que la unidad que están indicando.
+        Antes iban con `justify-center` y un `gap` fijo, y quedaban apelotonadas
+        en el centro de un bloque de 24rem con un vacío grande arriba y abajo.
+        Con `justify-between` el aire lo define la altura del escenario en vez
+        de un número escrito a mano: si el contenido crece, la separación
+        acompaña sola.
 
-        El `gap-10` es lo mismo mirado de otra forma: con `gap-6` las tres
-        entradas se leían como un bloque de texto de tres renglones y no como
-        tres destinos separados.
+        En mobile no aplica — ahí las tres van en fila y el `gap` sí manda.
       */}
-      <ol className="flex flex-row flex-wrap gap-x-6 gap-y-3 lg:flex-col lg:justify-center lg:gap-10">
+      <ol className="flex flex-row flex-wrap gap-x-6 gap-y-3 lg:flex-col lg:flex-nowrap lg:justify-between lg:gap-0">
         {items.map((item, index) => {
           const isActive = index === activeIndex;
 
