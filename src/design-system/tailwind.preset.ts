@@ -124,6 +124,8 @@ export const koraPreset = {
         'nav-rest': semanticSpacing.navRestOffset,
         'page-hero': semanticSpacing.pageHeroTop,
         'page-tail': semanticSpacing.pageTail,
+        'contact-top': semanticSpacing.contactTop,
+        'contact-bottom': semanticSpacing.contactBottom,
       },
       maxWidth: {
         container: containers.default,

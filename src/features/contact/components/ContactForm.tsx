@@ -36,8 +36,8 @@ export function ContactForm({ dict }: { dict: Dictionary['contact'] }) {
   });
 
   return (
-    <form onSubmit={onSubmit} noValidate className="flex w-full flex-col gap-12">
-      <div className="grid gap-12 sm:grid-cols-2 sm:gap-x-16">
+    <form onSubmit={onSubmit} noValidate className="flex w-full flex-col gap-[3.1875rem]">
+      <div className="grid gap-[3.1875rem] sm:grid-cols-2 sm:gap-x-[4.5rem]">
         <UnderlineInput
           label={dict.fieldName}
           autoComplete="name"
@@ -73,8 +73,9 @@ export function ContactForm({ dict }: { dict: Dictionary['contact'] }) {
           variant="wash"
           size="md"
           disabled={isSubmitting}
-          className="uppercase"
-          trailingIcon={<ArrowUpRight aria-hidden className="size-5" />}
+          /* 182×46 en el diseño: 20px a los lados, 11 arriba y abajo, texto de 16. */
+          className="gap-1 px-5 py-[11px] text-base uppercase"
+          trailingIcon={<ArrowUpRight aria-hidden className="size-6 text-accent" />}
         >
           {isSubmitting ? dict.submitting : dict.submitLabel}
         </Button>

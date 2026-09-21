@@ -26,14 +26,20 @@ export function ContactSection({ dict }: { dict: Dictionary['contact'] }) {
     <section
       id={SECTION_IDS.contacto}
       data-i18n-block
-      className="relative isolate scroll-mt-24 overflow-hidden bg-surface-inverse py-section-y"
+      className="relative isolate scroll-mt-24 overflow-hidden bg-surface-inverse pb-contact-bottom pt-contact-top"
     >
       <ContactGlow />
       {/* La capa `ruido` del diseño (nodo 1:1369): le saca lo plano al sólido. */}
       <NoiseOverlay />
 
-      <Container className="grid gap-16 lg:grid-cols-2 lg:gap-20">
-        <div className="flex flex-col gap-10">
+      {/*
+        Geometría del frame `bottom of page` (1127px de ancho): columna
+        izquierda de 455, derecha de 514 y 158 entre ambas. La línea divisoria
+        no es el borde de la columna: mide 337px y cuelga 64px por debajo del
+        tope de la columna derecha, 78px a su izquierda.
+      */}
+      <Container className="grid gap-16 lg:grid-cols-[455fr_514fr] lg:gap-x-[9.875rem]">
+        <div className="flex flex-col gap-[4.375rem]">
           <div className="flex flex-col gap-8">
             <Eyebrow withMark={false} tone="accent" size="sm" className="font-bold uppercase">
               {dict.eyebrow}
@@ -41,17 +47,18 @@ export function ContactSection({ dict }: { dict: Dictionary['contact'] }) {
 
             <RevealText
               as="h2"
-              className="font-display text-fluid-contact font-bold leading-snug tracking-tight text-on-inverse"
+              className="text-wrap font-display text-fluid-contact font-bold leading-relaxed tracking-tight text-on-inverse"
             >
               {dict.title} <span className="text-on-inverse-accent">{dict.titleHighlight}</span>
             </RevealText>
 
-            <p className="max-w-[26ch] font-display text-xl font-medium leading-relaxed tracking-tight text-on-inverse">
+            <p className="max-w-[23.125rem] font-display text-xl font-medium leading-relaxed tracking-tight text-on-inverse">
               {dict.description}
             </p>
           </div>
 
-          <ul className="flex flex-col gap-5">
+          {/* La lista va 20px adentro y sus filas cada 48px (26 de texto + 22). */}
+          <ul className="flex flex-col gap-[1.375rem] pl-5">
             {CONTACT_LINES.map((line) => (
               <li key={line.label} className="flex items-center gap-4">
                 <SquareMark size="sm" />
@@ -72,7 +79,11 @@ export function ContactSection({ dict }: { dict: Dictionary['contact'] }) {
           </ul>
         </div>
 
-        <div className="lg:border-l lg:border-hairline-inverse lg:pl-20">
+        <div className="relative">
+          <span
+            aria-hidden
+            className="absolute -left-[4.875rem] top-16 hidden h-[21.0625rem] w-px bg-hairline-inverse lg:block"
+          />
           <ContactForm dict={dict} />
         </div>
       </Container>

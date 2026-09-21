@@ -48,6 +48,13 @@ export const semanticSpacing = {
    * equivalente son 176px.
    */
   pageTail: 'clamp(8rem, 2rem + 32vw, 30.8rem)',
+  /**
+   * Padding del bloque oscuro de contacto. En Figma el contenido arranca a
+   * 104px del borde superior y deja 216 hasta el final de la página, en las
+   * dos páginas (TIPO 2 y TIPO 3).
+   */
+  contactTop: 'clamp(4rem, 2rem + 5vw, 6.5rem)',
+  contactBottom: 'clamp(5rem, 2rem + 12.8vw, 13.5rem)',
 } as const;
 
 /**
