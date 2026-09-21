@@ -60,6 +60,17 @@ export function Hero({ dict }: { dict: Dictionary['hero'] }) {
         />
 
         {/*
+          Los colores cálidos del hero (grupo `Colores hero` en Figma).
+
+          Va después de la imagen y con el mismo `-z-10`: comparten capa, así
+          que manda el orden del DOM y este queda encima de la foto pero debajo
+          del texto. Sin esto el hero se veía gris — los glows cálidos de la
+          página viven en `<AmbientGlow>`, detrás de todo, y la foto es opaca,
+          así que nunca la alcanzaban. En Figma este grupo está sobre la imagen.
+        */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-glow-hero" />
+
+        {/*
           `px-card-gutter` es el mismo padding que usa el nav: por eso el logo
           queda a plomo con el título, en cualquier ancho.
         */}
@@ -78,21 +89,55 @@ export function Hero({ dict }: { dict: Dictionary['hero'] }) {
 
             En desktop desaparece: ahí la imagen ya es clara del lado del texto
             y el diseño no lleva panel.
+
+            Ojo con cómo se apaga: es `lg:backdrop-filter-none` y **no**
+            `lg:backdrop-blur-none`. En Tailwind el blur y el saturate son dos
+            variables CSS distintas que se componen en un mismo
+            `backdrop-filter`, así que apagar solo el blur dejaba vivo el
+            `backdrop-saturate-150` en desktop. El panel seguía saturando todo
+            lo que tenía detrás dentro de su caja —y con `lg:rounded-none`, una
+            caja de esquinas rectas—, así que dibujaba una línea recta sobre la
+            foto justo debajo de los botones. Medido en el borde: el fondo del
+            estudio saltaba +2 en el canal azul, y sobre el abrigo, que es mucho
+            más saturado, el escalón se veía a simple vista.
           */}
           <div
             className={cn(
               'flex flex-col gap-7 sm:gap-6',
               'rounded-panel border border-glass bg-glass-panel p-6 shadow-panel backdrop-blur-xl backdrop-saturate-150 sm:p-8',
-              'lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none',
+              'lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-filter-none',
             )}
           >
             <p className="font-mono text-base tracking-tight text-heading">{dict.eyebrow}</p>
 
             {/* `immediate`: está sobre el fold, no hay scroll que esperar. */}
+            {/*
+              Ancho del titular: 815px, el ancho del **marco** en Figma.
+
+              Antes era `max-w-[21ch]`, que a 36px son 481px — poco más de la
+              mitad. Con ese ancho el título entraba en cuatro renglones y
+              partía "con tecnología accesible y consultoría inteligente" al
+              medio. Con 773 corta donde corta el diseño: "…startups se" /
+              "…accesible y" / "consultoría inteligente.".
+
+              815 y no 773. En Figma la capa de texto dice 773, pero ese es el
+              ancho *resultante*: la caja se ajusta al renglón más largo, así
+              que 773 es exactamente el largo de "…startups se". Usarlo de tope
+              deja cero margen — cualquier diferencia de una fracción de píxel
+              entre cómo mide Figma y cómo mide el navegador empuja "se" abajo y
+              vuelven los cuatro renglones. 815 es el marco que lo contiene, y
+              cae con aire dentro de la ventana que conserva el corte del
+              diseño: entre 773 (el renglón 1 entero) y ~844 (donde "consultoría"
+              empezaría a subir al renglón 2).
+
+              Va en px y no en `ch` porque `ch` mide el ancho del cero de la
+              tipografía activa, así que el corte cambiaba según cuál hubiera
+              cargado. El diseño da un ancho, no una cantidad de caracteres.
+            */}
             <RevealText
               as="h1"
               immediate
-              className="max-w-[21ch] font-display text-fluid-hero font-medium leading-snug tracking-tight text-heading"
+              className="max-w-[815px] font-display text-fluid-hero font-medium leading-snug tracking-tight text-heading"
             >
               {dict.title}
             </RevealText>

@@ -49,6 +49,8 @@ export const colorPrimitives = {
   },
   /** Tintes de los círculos de icono de las cards de valor — alternan. */
   steel: {
+    /** Azul acero de los íconos de las cards impares. */
+    ink: '#305b7e',
     wash: 'rgba(48, 91, 126, 0.2)',
   },
   /** Crema casi blanco del círculo de icono par. */
@@ -115,6 +117,10 @@ export const semanticColors = {
     /** Palabra resaltada dentro de titulares sobre fondo oscuro ("juntos"). */
     onInverseAccent: colorPrimitives.sky[300],
     placeholder: colorPrimitives.ink[500],
+    /** Ícono de las cards de valor impares: azul acero sobre el círculo azulado. */
+    iconCool: colorPrimitives.steel.ink,
+    /** Ícono de las cards de valor pares: ámbar claro sobre el círculo crema. */
+    iconWarm: colorPrimitives.amber[500],
   },
   accent: {
     primary: colorPrimitives.amber[600],
@@ -161,6 +167,26 @@ export const semanticColors = {
       'radial-gradient(560px 720px at 105% 37%, rgba(255, 184, 130, 0.26) 0%, rgba(247, 246, 245, 0) 62%)',
       'radial-gradient(560px 780px at -5% 47%, rgba(255, 184, 130, 0.24) 0%, rgba(247, 246, 245, 0) 62%)',
       'radial-gradient(1100px 460px at 45% 79%, rgba(251, 217, 189, 0.34) 0%, rgba(247, 246, 245, 0) 65%)',
+    ].join(', '),
+    /**
+     * Los colores cálidos que van **sobre** la foto del hero.
+     *
+     * Salen del grupo `Colores hero` del frame de Figma, con sus opacidades
+     * tal cual: `E79A4E` al 20%, `E9C39D` al 40%, `FFB881` al 50%.
+     *
+     * Van acá y no en `page` porque la diferencia es de capa, no de color: los
+     * de `page` viven detrás de todo, y la foto del hero es opaca, así que
+     * nunca la alcanzan. En Figma este grupo está *encima* de la imagen, y es
+     * lo que hace que ahí el hero se lea cálido y acá se leyera gris.
+     *
+     * La calidez se concentra abajo y a la derecha. Arriba a la izquierda
+     * quedan limpios a propósito: es donde va el titular, y ahí cualquier velo
+     * le come contraste.
+     */
+    hero: [
+      'radial-gradient(120% 95% at 74% 112%, rgba(255, 184, 129, 0.50) 0%, rgba(255, 184, 129, 0) 60%)',
+      'radial-gradient(95% 75% at 110% 22%, rgba(233, 195, 157, 0.40) 0%, rgba(233, 195, 157, 0) 58%)',
+      'radial-gradient(105% 85% at 26% 122%, rgba(231, 154, 78, 0.20) 0%, rgba(231, 154, 78, 0) 56%)',
     ].join(', '),
     sectionLeft:
       'radial-gradient(46% 58% at -6% 50%, rgba(255, 184, 130, 0.32) 0%, rgba(247, 246, 245, 0) 68%)',

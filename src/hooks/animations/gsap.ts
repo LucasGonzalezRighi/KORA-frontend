@@ -111,3 +111,41 @@ export function whenFontsReady(run: () => void): () => void {
     cancelled = true;
   };
 }
+
+/**
+ * Aire que se le da a cada línea enmascarada para que no le corten la tinta.
+ *
+ * `mask: 'lines'` envuelve cada renglón en una caja con `overflow: clip` cuyo
+ * alto es el de la **caja de línea**, o sea `font-size × line-height`. Pero la
+ * tinta de una fuente no cabe necesariamente ahí: entre el ascendente y el
+ * descendente, la mayoría de las tipografías ocupan ~1.25em. Con
+ * `lineHeights.snug` en 1.15 —que es el del titular del hero, y viene del
+ * diseño— la caja mide 1.15em y la tinta 1.25em, así que sobresale ~0.05em por
+ * arriba y por abajo, y la máscara se lo come.
+ *
+ * Se nota en las colas de la `g`, la `y` y la `p`, y en los acentos de las
+ * mayúsculas. En Figma no pasa porque ahí no hay recorte de ningún tipo.
+ *
+ * Medido con un caso forzado: la máscara comía tinta, y con esto vuelve entera.
+ */
+const MASK_ROOM = '0.12em';
+
+type MaskedSplit = { lines: ArrayLike<Element>; masks?: ArrayLike<Element> };
+
+/**
+ * Le da aire a las líneas de un `SplitText` con máscara, sin mover el layout.
+ *
+ * El truco está en dónde va cada cosa. El `padding` va en la **línea**, que es
+ * quien define el alto de la máscara: así la máscara crece y deja de recortar.
+ * El margen negativo va en la **máscara**, no en la línea — si fuera en la
+ * línea le volvería a bajar el alto a la máscara y estaríamos igual que antes.
+ * Puesto en la máscara solo corrige el ritmo vertical hacia afuera, y el bloque
+ * termina midiendo exactamente lo mismo que sin el arreglo.
+ */
+export function roomForDescenders(split: MaskedSplit): void {
+  gsap.set(split.lines, { paddingTop: MASK_ROOM, paddingBottom: MASK_ROOM });
+
+  if (split.masks && split.masks.length > 0) {
+    gsap.set(split.masks, { marginTop: `-${MASK_ROOM}`, marginBottom: `-${MASK_ROOM}` });
+  }
+}

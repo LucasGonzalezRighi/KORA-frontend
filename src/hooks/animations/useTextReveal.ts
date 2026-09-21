@@ -9,6 +9,7 @@ import {
   type MotionConditions,
   SplitText,
   gsap,
+  roomForDescenders,
   useGSAP,
   whenFontsReady,
   motionIsReduced,
@@ -83,15 +84,19 @@ export function useTextReveal<T extends HTMLElement = HTMLHeadingElement>(
             mask: 'lines',
             autoSplit: true,
             linesClass: 'kora-line',
-            onSplit: (self) =>
-              gsap.from(self.lines, {
+            onSplit: (self) => {
+              // Antes de animar: que la máscara no le coma los descendentes.
+              roomForDescenders(self);
+
+              return gsap.from(self.lines, {
                 yPercent: 110,
                 duration: isDesktop ? tokens.motion.durations.slow : tokens.motion.durations.base,
                 ease: tokens.motion.easings.outExpoSoft,
                 stagger: isDesktop ? tokens.motion.staggers.base : tokens.motion.staggers.tight,
                 delay,
                 ...(immediate ? {} : { scrollTrigger: { trigger: element, start, once: true } }),
-              }),
+              });
+            },
           });
         });
       });

@@ -46,6 +46,8 @@ export const koraPreset = {
         'on-inverse-muted': semanticColors.text.onInverseMuted,
         'on-inverse-accent': semanticColors.text.onInverseAccent,
         placeholder: semanticColors.text.placeholder,
+        'icon-cool': semanticColors.text.iconCool,
+        'icon-warm': semanticColors.text.iconWarm,
       },
       borderColor: {
         subtle: semanticColors.border.subtle,
@@ -58,6 +60,7 @@ export const koraPreset = {
       },
       backgroundImage: {
         'glow-page': semanticColors.glow.page,
+        'glow-hero': semanticColors.glow.hero,
         'glow-left': semanticColors.glow.sectionLeft,
         'glow-right': semanticColors.glow.sectionRight,
         'glow-contact': semanticColors.glow.contactAmber,

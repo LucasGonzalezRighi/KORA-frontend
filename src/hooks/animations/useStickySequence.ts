@@ -10,6 +10,7 @@ import {
   SplitText,
   gsap,
   motionIsReduced,
+  roomForDescenders,
   useGSAP,
   whenFontsReady,
 } from './gsap';
@@ -28,6 +29,19 @@ const VH_PER_STEP = 110;
 
 /** Alto del escenario donde se superponen los pasos. */
 const STAGE_HEIGHT = '24rem';
+
+/**
+ * Alto de la zona que queda fija mientras se relevan los pasos.
+ *
+ * Tiene que ser `100vh`. Probé bajarlo para recortar el aire que queda arriba y
+ * abajo del contenido, y el efecto secundario es peor que el problema: con el
+ * escenario más corto que la ventana, al terminar el recorrido se despega y el
+ * contenido se va scrolleando a la vista antes de que entre la sección
+ * siguiente. Ocupando la pantalla entera, la transición es limpia.
+ *
+ * El aire sobrante se ataca desde los `padding` de las secciones, no desde acá.
+ */
+const STAGE_VIEWPORT = '100vh';
 
 type StepParts = {
   root: HTMLElement;
@@ -106,7 +120,7 @@ export function useStickySequence<T extends HTMLElement = HTMLDivElement>() {
         gsap.set(stage, {
           position: 'sticky',
           top: 0,
-          height: '100vh',
+          height: STAGE_VIEWPORT,
           display: 'flex',
           alignItems: 'center',
         });
@@ -118,7 +132,18 @@ export function useStickySequence<T extends HTMLElement = HTMLDivElement>() {
           roots.forEach((root) => {
             const titleEl = root.querySelector<HTMLElement>(`[${STEP.title}]`);
             if (titleEl) {
-              SplitText.create(titleEl, { type: 'lines', mask: 'lines', linesClass: 'kora-line' });
+              /*
+                Los títulos de unidad usan `leading-tight` (1.05), todavía más
+                apretado que el hero, así que acá la máscara recorta más: sin
+                este aire, a "Digitalizamos tu negocio" le falta el pie de la g.
+              */
+              roomForDescenders(
+                SplitText.create(titleEl, {
+                  type: 'lines',
+                  mask: 'lines',
+                  linesClass: 'kora-line',
+                }),
+              );
             }
           });
 

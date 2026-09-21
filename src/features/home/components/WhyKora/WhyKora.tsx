@@ -13,8 +13,14 @@ import { REVEAL_ITEM_CLASS, useScrollReveal } from '@/hooks/animations';
 export function WhyKora({ dict }: { dict: Dictionary['whyKora'] }) {
   const containerRef = useScrollReveal<HTMLDivElement>();
 
+  /*
+    `-mb-[8px]`: le come 8px al aire que separa las cards de "Nuestras
+    soluciones" (fueron 3 primero y 5 más después). Va como margen negativo y no tocando `py-section-y`, que es
+    el ritmo vertical de toda la landing: así el ajuste queda en esta sección
+    y no mueve ninguna otra.
+  */
   return (
-    <Section id={SECTION_IDS.porQueKora} glow="right">
+    <Section id={SECTION_IDS.porQueKora} glow="right" className="-mb-[8px]">
       <Container>
         <div ref={containerRef} className="flex flex-col gap-16">
           <SectionHeading

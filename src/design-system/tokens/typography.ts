@@ -41,8 +41,27 @@ export const fontSizes = {
  * Los topes son los tamaños exactos del diseño a 1440px.
  */
 export const fluidFontSizes = {
-  /** Hero: 36px. */
-  hero: 'clamp(1.75rem, 1.1rem + 2.7vw, 2.25rem)',
+  /**
+   * Hero: 36px como en Figma, pero encogiendo con la ventana.
+   *
+   * El titular tiene que cortar en tres renglones exactos —"…startups se" /
+   * "…accesible y" / "consultoría inteligente."— y eso depende de que el primer
+   * renglón entre entero. A 36px ese renglón mide 773px, y el ancho disponible
+   * es aproximadamente `0.82 × ancho de ventana` después de los dos gutters. O
+   * sea que por debajo de ~1000px de ventana no entra, y el corte se rompe por
+   * más que se toque el `max-width`: el problema es el cuerpo, no la caja.
+   *
+   * `3.55vw` es el factor que mantiene el corte. Sale de dos condiciones: el
+   * primer renglón tiene que entrar, y el segundo NO tiene que tener lugar para
+   * "consultoría". Eso deja una ventana de factores válidos, y 3.55 cae adentro
+   * tanto si carga Satoshi (donde el renglón mide 773px a 36) como si entra la
+   * tipografía de sistema (que es más ancha y mide 818px).
+   *
+   * Arriba de ~1014px de ventana el `clamp` topa en 36px y el corte pasa a
+   * sostenerlo el `max-w-[815px]` del `<h1>`. Abajo de ~660px topa en el mínimo
+   * y el título vuelve a partirse solo, que es lo que corresponde en teléfono.
+   */
+  hero: 'clamp(1.5rem, 3.55vw, 2.25rem)',
   /** Titulares centrados de sección: 48px. */
   sectionTitle: 'clamp(1.875rem, 1.15rem + 3.1vw, 3rem)',
   /** Titular en línea tipo "¿Porque las empresas eligen Kora Advisory?": 36px. */

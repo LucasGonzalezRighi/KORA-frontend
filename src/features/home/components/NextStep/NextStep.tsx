@@ -14,8 +14,13 @@ import { REVEAL_ITEM_CLASS, useScrollReveal } from '@/hooks/animations';
 export function NextStep({ dict }: { dict: Dictionary['nextStep'] }) {
   const containerRef = useScrollReveal<HTMLDivElement>();
 
+  /*
+    `pt-0`: esta sección no lleva aire propio arriba. El espacio que la separa
+    de la secuencia de soluciones ya lo pone esa sección al cerrar, y sumarle
+    otro padding acá dejaba un hueco grande entre las dos.
+  */
   return (
-    <Section tight>
+    <Section tight className="pt-0">
       <Container>
         <div ref={containerRef} className="flex flex-col items-center gap-8 text-center">
           <Overline className={REVEAL_ITEM_CLASS}>{dict.overline}</Overline>
