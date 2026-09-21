@@ -39,8 +39,7 @@ export function Founders({ dict }: { dict: Dictionary['about']['team'] }) {
                   name={dict.members[id].name}
                   role={dict.members[id].role}
                   school={dict.members[id].school}
-                  photo={FOUNDERS[id].photo}
-                  linkedinUrl={FOUNDERS[id].linkedinUrl}
+                  founder={FOUNDERS[id]}
                   linkedinLabel={dict.linkedinLabel}
                 />
               </li>

@@ -4,15 +4,14 @@ import Image from 'next/image';
 
 import { useTilt } from '@/hooks/animations';
 
-import { FOUNDER_PHOTO } from '../../data/founders';
+import { FOUNDER_PHOTO, type Founder } from '../../data/founders';
 import { LinkedInMark } from './LinkedInMark';
 
 type FounderCardProps = {
   name: string;
   role: string;
   school: string;
-  photo: string;
-  linkedinUrl: string;
+  founder: Founder;
   /** Texto accesible del link: "Ver el perfil de LinkedIn de". */
   linkedinLabel: string;
 };
@@ -25,21 +24,20 @@ type FounderCardProps = {
  * El borde es de 3px — más grueso que el filete de las otras cards a
  * propósito: son las únicas con foto y el marco las separa del fondo.
  */
-export function FounderCard({
-  name,
-  role,
-  school,
-  photo,
-  linkedinUrl,
-  linkedinLabel,
-}: FounderCardProps) {
+export function FounderCard({ name, role, school, founder, linkedinLabel }: FounderCardProps) {
   const ref = useTilt<HTMLElement>();
+  const { photo, width, height, frame, linkedinUrl } = founder;
 
   return (
     <article
       ref={ref}
       className="flex h-full flex-col gap-6 rounded-card-soft border-[3px] border-peach bg-surface p-9 shadow-card-rest transition-shadow duration-300 ease-out hover:shadow-card-hover sm:p-10"
     >
+      {/*
+        La máscara. La foto adentro NO va con `object-cover`: en Figma cada una
+        está ampliada y corrida a mano (ver `frame` en `data/founders.ts`), y
+        un cover centrado mostraba el medio de la foto en vez de la cara.
+      */}
       <div
         className="relative w-full overflow-hidden rounded-media"
         style={{ aspectRatio: `${FOUNDER_PHOTO.width} / ${FOUNDER_PHOTO.height}` }}
@@ -47,9 +45,15 @@ export function FounderCard({
         <Image
           src={photo}
           alt={name}
-          fill
-          sizes="(min-width: 1024px) 273px, (min-width: 640px) 45vw, 90vw"
-          className="object-cover"
+          width={width}
+          height={height}
+          sizes="(min-width: 1024px) 360px, (min-width: 640px) 55vw, 100vw"
+          className="absolute h-auto max-w-none"
+          style={{
+            width: `${frame.scale * 100}%`,
+            left: `${frame.x * 100}%`,
+            top: `${frame.y * 100}%`,
+          }}
         />
       </div>
 
