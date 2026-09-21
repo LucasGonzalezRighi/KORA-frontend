@@ -95,17 +95,49 @@ export const POINTER_CONDITIONS = {
   prefersReduced: MOTION_MEDIA.reduced,
 } as const;
 
+/** Pesos de la fuente display que usan los titulares. Se esperan antes de partir líneas. */
+const DISPLAY_FONT_FACES = ['500 1em Satoshi', '700 1em Satoshi', '900 1em Satoshi'] as const;
+
+/** Tope de espera por la hoja de estilos del CDN; pasado esto se parte igual. */
+const FONT_STYLESHEET_TIMEOUT_MS = 3000;
+
+/**
+ * La hoja de Fontshare que declara Satoshi. Hasta que no llega, el navegador
+ * ni sabe que la familia existe.
+ */
+function fontStylesheetLoaded(): Promise<void> {
+  const link = document.querySelector<HTMLLinkElement>('link[rel="stylesheet"][href*="fontshare"]');
+  if (!link || link.sheet) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    const done = () => resolve();
+    link.addEventListener('load', done, { once: true });
+    link.addEventListener('error', done, { once: true });
+    window.setTimeout(done, FONT_STYLESHEET_TIMEOUT_MS);
+  });
+}
+
 /**
  * SplitText mide el texto ya renderizado, así que partir antes de que cargue la
  * webfont da cortes de línea equivocados. Satoshi viene de un CDN, con lo cual
  * esto no es teórico.
+ *
+ * `document.fonts.ready` solo no alcanza: se resuelve apenas no hay cargas
+ * *pendientes*, y si la hoja del CDN todavía no llegó, no hay nada pendiente —
+ * el titular está en la fuente de fallback, más ancha, y las líneas quedan
+ * partidas donde no corresponde ("El equipo / detrás de kora."). Por eso acá se
+ * espera la hoja, se pide la carga explícita de cada peso y recién ahí se
+ * vuelve a consultar `ready`.
  */
 export function whenFontsReady(run: () => void): () => void {
   let cancelled = false;
 
-  void document.fonts.ready.then(() => {
-    if (!cancelled) run();
-  });
+  void fontStylesheetLoaded()
+    .then(() => Promise.all(DISPLAY_FONT_FACES.map((face) => document.fonts.load(face))))
+    .then(() => document.fonts.ready)
+    .then(() => {
+      if (!cancelled) run();
+    });
 
   return () => {
     cancelled = true;
