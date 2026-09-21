@@ -162,7 +162,7 @@ export const en: Dictionary = {
 
   newsletter: {
     title: 'Get our articles in your inbox',
-    description: 'Practical ideas on AI, processes and digitalisation. No spam.',
+    description: 'Practical ideas on AI, processes and digitalisation.\nNo spam.',
     placeholder: 'you@company.com',
     submitLabel: 'Subscribe to the newsletter',
     success: 'Done, you are subscribed.',

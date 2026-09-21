@@ -19,9 +19,7 @@ export function Founders({ dict }: { dict: Dictionary['about']['team'] }) {
       <Container>
         <div ref={ref} className="flex flex-col items-center gap-16 lg:gap-24">
           <div className="flex flex-col items-center gap-8 text-center">
-            <Overline className={`${REVEAL_ITEM_CLASS} text-xl font-black normal-case tracking-tight`}>
-              {dict.overline.toUpperCase()}
-            </Overline>
+            <Overline className={REVEAL_ITEM_CLASS}>{dict.overline}</Overline>
             <RevealText
               as="h2"
               className="font-display text-fluid-section-lg font-bold leading-snug tracking-tight text-heading"

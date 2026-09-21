@@ -50,7 +50,7 @@ export function BlogCard({
   return (
     <article
       ref={ref}
-      className="flex h-full flex-col gap-5 rounded-card border border-card bg-surface p-card-padding shadow-card-rest transition-shadow duration-300 ease-out hover:shadow-card-hover"
+      className="flex h-full flex-col rounded-panel border border-card bg-surface p-8 shadow-card-rest transition-shadow duration-300 ease-out hover:shadow-card-hover"
     >
       {/*
         La portada es más alta que su marco y se desplaza dentro de él al
@@ -68,25 +68,27 @@ export function BlogCard({
         />
       </div>
 
-      <span className="w-fit rounded-pill border border-hairline px-4 py-1 font-display text-xs font-medium text-heading">
+      {/* Medidas del nodo `texto card`: pill 129×27 a 27px de la imagen, título a 22, cuerpo a 32. */}
+      <span className="mt-7 w-fit rounded-pill border border-ink/60 px-[15px] py-1 font-display text-sm font-medium leading-relaxed text-heading">
         {category}
       </span>
 
-      <h3 className="font-display text-md font-bold leading-heading tracking-tight text-heading">
+      <h3 className="mt-[1.375rem] max-w-[19.3125rem] font-display text-lg font-bold leading-relaxed tracking-tight text-heading">
         <Link href={href} className="transition-colors duration-200 ease-out hover:text-accent">
           {title}
         </Link>
       </h3>
 
-      <p className="flex-1 font-display text-sm font-medium leading-body text-body">{excerpt}</p>
+      <p className="mt-8 px-1 font-display text-sm font-medium leading-body text-body">{excerpt}</p>
 
-      <footer className="flex items-center justify-between gap-4 pt-2">
-        <time dateTime={publishedAt} className="font-display text-xs text-body">
+      {/* El pie va anclado al fondo de la card: entre el cuerpo y él queda el aire que sobre. */}
+      <footer className="mt-auto flex items-end justify-between gap-4 px-2.5 pt-10">
+        <time dateTime={publishedAt} className="font-display text-xs leading-relaxed text-body">
           {formattedDate}
         </time>
         <Link
           href={href}
-          className="font-display text-sm font-medium text-heading underline underline-offset-4 transition-colors duration-200 ease-out hover:text-accent"
+          className="font-display text-sm font-bold leading-relaxed text-heading underline underline-offset-4 transition-colors duration-200 ease-out hover:text-accent"
         >
           {readMoreLabel}
         </Link>

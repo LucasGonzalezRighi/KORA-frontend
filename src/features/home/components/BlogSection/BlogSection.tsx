@@ -32,25 +32,35 @@ export function BlogSection({ locale, dict, newsletterDict }: BlogSectionProps) 
   return (
     <Section id={SECTION_IDS.blog}>
       <Container>
-        <div ref={containerRef} className="flex flex-col gap-16">
-          <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+        {/* 109px del encabezado a las cards y 106 de las cards al newsletter, en el diseño. */}
+        <div ref={containerRef} className="flex flex-col gap-16 lg:gap-[6.75rem]">
+          {/*
+            El botón no va al pie del titular sino a su tope: en Figma arranca
+            en la misma `y` que la primera línea de "Ideas para modernizar…".
+            Por eso el encabezado es una grilla con el eyebrow en la fila de
+            arriba y titular + botón en la de abajo.
+          */}
+          <div className="flex flex-col items-start gap-8 md:flex-row md:items-start md:justify-between">
             <SectionHeading
               eyebrow={dict.eyebrow}
               title={dict.title}
+              titleMaxWidth="max-w-[34.5rem]"
               className={REVEAL_ITEM_CLASS}
             />
+            {/* 311×61 en el diseño: texto de 20 y 32px de padding. */}
             <LinkButton
               href={ROUTES_APP.blog(locale)}
               variant="outline"
               size="lg"
-              className={`${REVEAL_ITEM_CLASS} shrink-0`}
-              trailingIcon={<ArrowRight aria-hidden className="size-5" />}
+              className={`${REVEAL_ITEM_CLASS} shrink-0 gap-1 py-[17px] text-lg leading-relaxed md:mt-[4.4375rem]`}
+              trailingIcon={<ArrowRight aria-hidden className="size-6" />}
             >
               {dict.cta}
             </LinkButton>
           </div>
 
-          <ul ref={coversRef} className="grid gap-card-gap md:grid-cols-2 lg:grid-cols-3">
+          {/* 29px entre cards. */}
+          <ul ref={coversRef} className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             {POST_SLUGS.map((slug) => (
               <li key={slug} className={REVEAL_ITEM_CLASS}>
                 <BlogCard

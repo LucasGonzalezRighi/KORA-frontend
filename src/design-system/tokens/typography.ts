@@ -64,7 +64,7 @@ export const fluidFontSizes = {
    */
   hero: 'clamp(1.5rem, 3.55vw, 2.25rem)',
   /** Titulares centrados de sección: 48px. */
-  sectionTitle: 'clamp(1.875rem, 1.15rem + 3.1vw, 3rem)',
+  sectionTitle: 'clamp(1.875rem, 1.15rem + 3.1vw, 3.25rem)',
   /** Titular en línea tipo "¿Porque las empresas eligen Kora Advisory?": 36px. */
   sectionTitleSm: 'clamp(1.625rem, 1.15rem + 2vw, 2.25rem)',
   /** Títulos de unidad de negocio: 48px. */

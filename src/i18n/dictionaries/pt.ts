@@ -162,7 +162,7 @@ export const pt: Dictionary = {
 
   newsletter: {
     title: 'Receba nossos artigos no seu email',
-    description: 'Ideias práticas sobre IA, processos e digitalização. Sem spam.',
+    description: 'Ideias práticas sobre IA, processos e digitalização.\nSem spam.',
     placeholder: 'voce@empresa.com',
     submitLabel: 'Assinar a newsletter',
     success: 'Pronto, sua assinatura está confirmada.',

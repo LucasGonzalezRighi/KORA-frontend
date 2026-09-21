@@ -167,7 +167,7 @@ export const es = {
 
   newsletter: {
     title: 'Recibí nuestros artículos en tu email',
-    description: 'Ideas prácticas sobre IA, procesos y digitalización. Sin spam.',
+    description: 'Ideas prácticas sobre IA, procesos y digitalización.\nSin spam.',
     placeholder: 'tu@empresa.com',
     submitLabel: 'Suscribirme al newsletter',
     success: 'Listo, ya estás suscripto.',

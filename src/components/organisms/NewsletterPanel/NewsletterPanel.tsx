@@ -33,10 +33,11 @@ export function NewsletterPanel({ dict }: { dict: Dictionary['newsletter'] }) {
     <div className="rounded-panel bg-surface-inverse px-8 py-10 shadow-panel sm:px-11">
       <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
         <div className="flex flex-col gap-3.5">
-          <h2 className="font-display text-xl font-bold leading-snug tracking-tight text-on-inverse">
+          <h2 className="font-display text-lg font-medium leading-relaxed tracking-tight text-on-inverse">
             {dict.title}
           </h2>
-          <p className="max-w-[40ch] font-display text-md font-medium leading-snug text-on-inverse-muted">
+          {/* La bajada corta antes de "Sin spam." en el diseño: el salto viene del diccionario. */}
+          <p className="max-w-[35.375rem] whitespace-pre-line font-display text-base font-medium leading-relaxed text-on-inverse-muted">
             {dict.description}
           </p>
         </div>

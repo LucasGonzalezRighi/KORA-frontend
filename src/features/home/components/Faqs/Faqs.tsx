@@ -23,7 +23,12 @@ export function Faqs({ dict }: { dict: Dictionary['faqs'] }) {
     <Section id={SECTION_IDS.faqs} glow="left">
       <Container>
         <div ref={containerRef} className="flex flex-col gap-14">
-          <SectionHeading eyebrow={dict.eyebrow} title={dict.title} className={REVEAL_ITEM_CLASS} />
+          <SectionHeading
+            eyebrow={dict.eyebrow}
+            title={dict.title}
+            titleMaxWidth="max-w-[34.5rem]"
+            className={REVEAL_ITEM_CLASS}
+          />
 
           <div className={REVEAL_ITEM_CLASS}>
             <FaqAccordion faqs={faqs} />
