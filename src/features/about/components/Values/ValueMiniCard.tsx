@@ -10,6 +10,11 @@ import type { ValueIcon } from '../../data/values';
  *
  * Mide 262px de alto en el diseño con el contenido arriba y aire abajo: el
  * `min-h` y el padding inferior reproducen esa proporción.
+ *
+ * El texto va a 168px de ancho, el de la caja de Figma: así las bajadas parten
+ * igual que en el diseño (cuatro líneas, y cinco en "Agilidad", que ahí
+ * también ocupa cinco). Medido: con más ancho tres de ellas caen a tres
+ * líneas; con menos, dos se van a cinco.
  */
 export function ValueMiniCard({
   icon: Icon,
@@ -25,7 +30,7 @@ export function ValueMiniCard({
   return (
     <article
       ref={ref}
-      className="flex h-full min-h-[16.375rem] flex-col items-center gap-2.5 rounded-card-soft border border-peach bg-surface-warm px-5 pb-11 pt-6 text-center shadow-card-rest transition-shadow duration-300 ease-out hover:shadow-card-hover"
+      className="flex h-full min-h-[16.375rem] flex-col items-center gap-2.5 rounded-card-soft border border-peach bg-surface-warm px-4 pb-11 pt-6 text-center shadow-card-rest transition-shadow duration-300 ease-out hover:shadow-card-hover"
     >
       <span className="flex size-[42px] items-center justify-center rounded-tile border border-tile bg-tile">
         <Icon aria-hidden className="size-6 text-accent-bright" strokeWidth={1.75} />
@@ -33,7 +38,7 @@ export function ValueMiniCard({
       <h3 className="px-2.5 py-2.5 font-display text-base font-bold leading-relaxed tracking-tight text-accent">
         {title}
       </h3>
-      <p className="font-display text-sm font-medium leading-body tracking-tight text-body">
+      <p className="max-w-[10.5rem] font-display text-sm font-medium leading-body tracking-tight text-body">
         {description}
       </p>
     </article>
