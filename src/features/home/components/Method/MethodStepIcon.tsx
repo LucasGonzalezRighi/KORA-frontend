@@ -210,8 +210,6 @@ function Construimos() {
         className="kora-node-line stroke-heading/55"
         strokeWidth="1.1"
         fill="none"
-        strokeWidth="0.75"
-        className="stroke-heading/30"
       />
       <rect
         x="42"
