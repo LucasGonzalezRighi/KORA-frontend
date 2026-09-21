@@ -15,7 +15,8 @@ export function Values({ dict }: { dict: Dictionary['about']['values'] }) {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <Section tight>
+    /* `pb-page-tail`: los ~490px de aire que el diseño deja antes del contacto. */
+    <Section tight className="pb-page-tail">
       <Container>
         <div ref={ref} className="flex flex-col items-center gap-14">
           <div className="flex flex-col items-center gap-8 text-center">

@@ -123,6 +123,7 @@ export const koraPreset = {
         'card-gutter': semanticSpacing.cardGutter,
         'nav-rest': semanticSpacing.navRestOffset,
         'page-hero': semanticSpacing.pageHeroTop,
+        'page-tail': semanticSpacing.pageTail,
       },
       maxWidth: {
         container: containers.default,

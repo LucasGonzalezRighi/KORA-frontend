@@ -1,8 +1,8 @@
 'use client';
 
-import type { LucideIcon } from 'lucide-react';
-
 import { useTilt } from '@/hooks/animations';
+
+import type { ValueIcon } from '../../data/values';
 
 /**
  * Mini card de valores: tile de icono centrado, título en ámbar y una bajada
@@ -16,7 +16,7 @@ export function ValueMiniCard({
   title,
   description,
 }: {
-  icon: LucideIcon;
+  icon: ValueIcon;
   title: string;
   description: string;
 }) {

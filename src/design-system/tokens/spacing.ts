@@ -41,6 +41,13 @@ export const semanticSpacing = {
    * titular arranca en `y=320` con el nav en `y=93`.
    */
   pageHeroTop: 'calc(2.75rem + clamp(1rem, 4.4vw, 4rem) + clamp(6rem, 1rem + 12vw, 13.2rem))',
+  /**
+   * Aire al final de Nosotras, entre las cards de valores y el bloque de
+   * contacto. En Figma son 493px (medido en el render de TIPO 3) — es un
+   * remanso deliberado de la página, no un padding de sección; en la home el
+   * equivalente son 176px.
+   */
+  pageTail: 'clamp(8rem, 2rem + 32vw, 30.8rem)',
 } as const;
 
 /**
