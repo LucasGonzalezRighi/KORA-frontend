@@ -51,7 +51,7 @@ export function Process({
           </ul>
 
           <Magnetic className={`${REVEAL_ITEM_CLASS} mt-6`}>
-            <LinkButton href={homeAnchor(locale, 'contacto')} variant="solid" size="lg">
+            <LinkButton href={homeAnchor(locale, 'contacto')} variant="solid" size="xl">
               {dict.cta}
             </LinkButton>
           </Magnetic>

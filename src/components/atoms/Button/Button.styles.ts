@@ -25,6 +25,8 @@ const SIZES: Record<ButtonSize, string> = {
   sm: 'px-4 py-2 text-sm',
   md: 'px-6 py-2 text-sm',
   lg: 'px-8 py-3 text-base',
+  /** CTA de página ("Agendar diagnóstico"): 352×55 en Figma, texto a 79px de cada borde. */
+  xl: 'whitespace-nowrap px-10 py-3.5 text-md sm:px-20',
 };
 
 /** El variant `icon` es un círculo: ignora el padding de las sizes. */
@@ -32,6 +34,7 @@ const ICON_SIZES: Record<ButtonSize, string> = {
   sm: 'size-11 p-0',
   md: 'size-[62px] p-0',
   lg: 'size-[72px] p-0',
+  xl: 'size-[72px] p-0',
 };
 
 export function buttonClasses(
