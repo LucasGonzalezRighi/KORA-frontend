@@ -27,6 +27,8 @@ export const colorPrimitives = {
     400: '#ffb882',
     /** Ámbar brillante de los numerales "01." de las cards de proceso. */
     350: '#f4973a',
+    /** Naranja vivo de la palabra "kora" en "El equipo detrás de kora." (muestreado del diseño). */
+    vivid: '#f07818',
     300: '#fbd9bd',
     200: '#f8efe4',
     100: '#fff3e8',
@@ -143,6 +145,8 @@ export const semanticColors = {
     iconWarm: colorPrimitives.amber[500],
     /** Numerales "01." de las cards de proceso. */
     accentBright: colorPrimitives.amber[350],
+    /** Palabra resaltada en naranja vivo dentro de un titular ("kora"). */
+    accentVivid: colorPrimitives.amber.vivid,
     /** Rol y universidad de las fundadoras, y el numeral de la card fría. */
     steel: colorPrimitives.steel.ink,
   },

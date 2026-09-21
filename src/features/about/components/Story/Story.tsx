@@ -33,7 +33,7 @@ export function Story({ dict }: { dict: Dictionary['about']['story'] }) {
               */
               className="max-w-[26rem] text-wrap font-display text-fluid-section-lg font-medium leading-snug tracking-tight text-heading"
             >
-              {dict.title} <span className="text-accent-bright">{dict.titleHighlight}</span>
+              {dict.title} <span className="text-accent-vivid">{dict.titleHighlight}</span>
               <span className="text-accent-soft">.</span>
             </RevealText>
           </div>

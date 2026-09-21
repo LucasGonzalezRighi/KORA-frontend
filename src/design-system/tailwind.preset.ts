@@ -52,6 +52,7 @@ export const koraPreset = {
         'icon-cool': semanticColors.text.iconCool,
         'icon-warm': semanticColors.text.iconWarm,
         'accent-bright': semanticColors.text.accentBright,
+        'accent-vivid': semanticColors.text.accentVivid,
         steel: semanticColors.text.steel,
       },
       borderColor: {
