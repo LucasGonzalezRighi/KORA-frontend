@@ -19,7 +19,7 @@ import {
 import type { Dictionary } from '@/i18n';
 
 import { MethodPath } from './MethodPath';
-import { ICON_ORIGIN, MethodStepIcon } from './MethodStepIcon';
+import { MethodStepIcon } from './MethodStepIcon';
 
 /** Cuánto avanza la línea por cada paso. Cuatro pasos → 0.25 cada uno. */
 const STEP_SPAN = 1 / METHOD_STEP_IDS.length;
@@ -55,40 +55,9 @@ const MOBILE_MARK_AT = 0.18;
  * Las que no llevan `yoyo` —la órbita y el recorrido— van con la duración tal
  * cual del prototipo.
  */
+/** Ritmo del viaje de los puntos por la línea del método. */
 const AMBIENT = {
-  /** `fadeIn`: opacidad mínima del parpadeo del paso 1. Nunca llega a apagarse. */
-  flickerOpacity: 0.3,
-  flickerDuration: 1.6,
-  /** El escalonado del prototipo, `nth-child` por `nth-child`. */
-  flickerStagger: 0.25,
-  /** `orbit`: una vuelta completa del punto del paso 2. */
-  orbitDuration: 5,
-  /** `pop`: cuánto se achica y se apaga el bloque del paso 3 al respirar. */
-  breatheScale: 0.9,
-  breatheOpacity: 0.55,
-  breatheDuration: 1.4,
-  /** `pulse`: recorrido de los halos del paso 4, de contraído a expandido. */
-  pulseFromScale: 0.7,
-  pulseFromOpacity: 0.12,
-  pulseToScale: 1.08,
-  pulseToOpacity: 0.5,
-  pulseDuration: 1.3,
-  /** Los `animation-delay` de `.r2` y `.r3`: medio segundo entre halo y halo. */
-  pulseStagger: 0.5,
-  /**
-   * `flow`: cuánto tarda un punto en recorrer la línea entera.
-   *
-   * Acá el prototipo no se puede copiar literal y hay que decir por qué. Allá
-   * cada punto cruza el hueco *entre dos columnas* en 2.8s; acá la línea es una
-   * sola onda que cruza las cuatro. Copiar el 2.8 daría un punto disparado.
-   *
-   * Lo que se conserva es la **cadencia**, que es lo que el ojo registra: con
-   * tres puntos repartidos a lo largo del recorrido, `2.8 × 3` hace que por
-   * cualquier punto de la línea pase uno cada 2.8s. El mismo pulso que el
-   * original, sobre una geometría distinta.
-   */
   flowDuration: 8.4,
-  /** El `10%` y `90%` del keyframe `flow`, donde el punto entra y sale. */
   flowFade: 0.84,
 } as const;
 
@@ -146,102 +115,17 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
         const { durations, easings, staggers, revealOffset } = tokens.motion;
 
         /**
-         * Arma los bucles de ambiente de un diagrama y los devuelve en pausa.
+         * Los bucles de ambiente de los diagramas ya no se arman acá.
          *
-         * Recibe la raíz por parámetro en vez de usar `scope` porque los dos
-         * breakpoints los agrupan distinto: en desktop los cuatro pasos están
-         * uno al lado del otro y arrancan juntos; en móvil cada paso enciende el
-         * suyo cuando entra en pantalla. Misma coreografía, distinto reparto.
+         * Viven como animaciones CSS en `theme.css` (`kora-loop-*`), portadas
+         * del prototipo. Una animación CSS gana sobre el estilo inline, así que
+         * un tween de GSAP sobre los mismos nodos quedaría pisado: tener las dos
+         * cosas sería código que corre sin efecto.
+         *
+         * Lo único que sigue siendo de GSAP es el viaje de los puntos por la
+         * línea, que necesita `MotionPath` y no tiene equivalente en CSS.
          */
-        const buildAmbient = (root: ParentNode) => {
-          const loops: gsap.core.Animation[] = [];
-
-          const flicker = root.querySelectorAll('.kora-node-flicker');
-          if (flicker.length) {
-            loops.push(
-              gsap.to(flicker, {
-                opacity: AMBIENT.flickerOpacity,
-                duration: AMBIENT.flickerDuration,
-                ease: easings.inOut,
-                repeat: -1,
-                yoyo: true,
-                paused: true,
-                stagger: { each: AMBIENT.flickerStagger, from: 'start' },
-              }),
-            );
-          }
-
-          const orbit = root.querySelectorAll('.kora-node-orbit');
-          if (orbit.length) {
-            loops.push(
-              gsap.to(orbit, {
-                rotation: 360,
-                svgOrigin: ICON_ORIGIN,
-                duration: AMBIENT.orbitDuration,
-                ease: 'none',
-                repeat: -1,
-                paused: true,
-              }),
-            );
-          }
-
-          const breathe = root.querySelectorAll('.kora-node-breathe');
-          if (breathe.length) {
-            loops.push(
-              gsap.to(breathe, {
-                scale: AMBIENT.breatheScale,
-                opacity: AMBIENT.breatheOpacity,
-                transformOrigin: 'center',
-                duration: AMBIENT.breatheDuration,
-                ease: easings.inOut,
-                repeat: -1,
-                yoyo: true,
-                paused: true,
-              }),
-            );
-          }
-
-          const pulse = root.querySelectorAll('.kora-node-pulse');
-          if (pulse.length) {
-            loops.push(
-              gsap.fromTo(
-                pulse,
-                {
-                  scale: AMBIENT.pulseFromScale,
-                  opacity: AMBIENT.pulseFromOpacity,
-                  /*
-                    El `svgOrigin` va acá **y** abajo, y no es repetición al pedo.
-
-                    En un `fromTo`, GSAP renderiza el estado inicial apenas se
-                    crea el tween. Ese primer render es el que fija el origen de
-                    la transformación, y si solo está declarado del lado `to`
-                    todavía no lo leyó: cae en el default y escala desde la
-                    esquina de la caja. Los halos quedan corridos ~13px arriba a
-                    la izquierda, descentrados del anillo, y lo peor es que no se
-                    mueven — quedan quietos ahí, así que parece un error de
-                    maquetado y no de animación. Medido, no supuesto.
-
-                    La capa 2 más abajo ya lo hace bien con su `transformOrigin`.
-                  */
-                  svgOrigin: ICON_ORIGIN,
-                },
-                {
-                  scale: AMBIENT.pulseToScale,
-                  opacity: AMBIENT.pulseToOpacity,
-                  svgOrigin: ICON_ORIGIN,
-                  duration: AMBIENT.pulseDuration,
-                  ease: easings.inOut,
-                  repeat: -1,
-                  yoyo: true,
-                  paused: true,
-                  stagger: { each: AMBIENT.pulseStagger, from: 'end' },
-                },
-              ),
-            );
-          }
-
-          return loops;
-        };
+        const buildAmbient = (_root: ParentNode): gsap.core.Animation[] => [];
 
         const structureOf = (root: ParentNode) =>
           root.querySelectorAll('.kora-node-dot, .kora-node-ring, .kora-node-line');
@@ -368,7 +252,30 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
           ease: easings.outQuart,
           stagger: { each: 0.012, from: 'start' },
           scrollTrigger: { trigger: scope, start: 'top 80%', once: true },
-          onComplete: () => ambient.forEach((animation) => animation.play()),
+        });
+
+        /*
+          El ambiente tiene su propio disparador, y no cuelga del `onComplete`
+          de la capa 1.
+
+          Antes dependía de él, y eso lo hacía frágil por dos motivos: si esa
+          animación no completaba —targets vacíos, un refresh de ScrollTrigger a
+          destiempo— **ningún** bucle arrancaba nunca, sin error visible; y los
+          elementos del paso 1 están en las dos capas a la vez, así que el orden
+          entre una y otra decidía si el parpadeo se veía o no.
+
+          Con `toggleActions` los bucles además se pausan al salir de pantalla y
+          se reanudan al volver, que es lo que hacía falta para no tener cuatro
+          diagramas latiendo mientras el visitante lee otra sección.
+        */
+        ScrollTrigger.create({
+          trigger: scope,
+          start: 'top 90%',
+          end: 'bottom top',
+          onEnter: () => ambient.forEach((animation) => animation.play()),
+          onEnterBack: () => ambient.forEach((animation) => animation.play()),
+          onLeave: () => ambient.forEach((animation) => animation.pause()),
+          onLeaveBack: () => ambient.forEach((animation) => animation.pause()),
         });
 
         /*

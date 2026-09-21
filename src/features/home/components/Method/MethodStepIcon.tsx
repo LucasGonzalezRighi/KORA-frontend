@@ -8,11 +8,19 @@ import type { MethodStepId } from '@/features/home/data/method';
  * marcas de encuadre y un punto que orbita, bloques sueltos que se ordenan, y
  * halos llenos que laten desde el centro.
  *
- * Acá solo vive la **geometría y el marcado**. Ninguna animación se declara en
- * este archivo: los diagramas exponen ganchos por clase y `Method` decide qué
- * hacer con ellos. Así el diagrama sigue siendo legible sin JavaScript.
+ * | Prototipo          | Acá          |
+ * |--------------------|--------------|
+ * | `--text-primary`   | `heading`    |
+ * | `--text-secondary` | `heading/55` |
+ * | `--text-muted`     | `heading/30` |
+ * | `--border`         | `heading/12` |
+ * | `--border-strong`  | `heading/22` |
+ * | `--accent`         | `accent`     |
  *
- * Ganchos disponibles:
+ * Las animaciones son las clases `kora-loop-*` de `theme.css`, portadas del
+ * prototipo. Al ser CSS, **ganan sobre cualquier tween de GSAP** sobre el mismo
+ * nodo: por eso los elementos con bucle no llevan `kora-node-*`, que es lo que
+ * consulta `Method` para animar con el scroll.
  *
  * | Clase | Qué hace `Method` con ella |
  * |---|---|
@@ -30,7 +38,7 @@ import type { MethodStepId } from '@/features/home/data/method';
  * compartieran elemento se pisarían.
  */
 
-const VIEW = 180;
+const VIEW = 120;
 const CENTER = VIEW / 2;
 
 /**
@@ -202,6 +210,48 @@ function Construimos() {
         className="kora-node-line stroke-heading/55"
         strokeWidth="1.1"
         fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/30"
+      />
+      <rect
+        x="42"
+        y="52"
+        width="10"
+        height="10"
+        fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/30"
+      />
+      <rect
+        x="60"
+        y="70"
+        width="10"
+        height="10"
+        fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/30"
+      />
+      <rect
+        x="86"
+        y="42"
+        width="9"
+        height="9"
+        fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/30"
+      />
+      {/* El cuadrado que respira. En el prototipo es `.build-sq` con `pop`. */}
+      <rect x="70" y="46" width="13" height="13" className="kora-loop-pop fill-accent" />
+      <line x1="29" y1="34" x2="52" y2="25" strokeWidth="0.5" className="stroke-heading/12" />
+      <line x1="29" y1="86" x2="42" y2="62" strokeWidth="0.5" className="stroke-heading/12" />
+      <line x1="52" y1="62" x2="60" y2="70" strokeWidth="0.5" className="stroke-heading/12" />
+      <line x1="62" y1="25" x2="70" y2="46" strokeWidth="0.5" className="stroke-heading/12" />
+      <line x1="83" y1="52" x2="86" y2="46" strokeWidth="0.5" className="stroke-heading/12" />
+      <path
+        d="M95 46 L103 46 M99 43 L103 46 L99 49"
+        fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/30"
       />
       {/* El bloque que se está construyendo respira. La escala de la entrada vive en el `<rect>`. */}
       <g className="kora-node-breathe">
@@ -249,8 +299,8 @@ export function MethodStepIcon({ step }: { step: MethodStepId }) {
     <svg
       viewBox={`0 0 ${VIEW} ${VIEW}`}
       aria-hidden
-      className="h-auto w-full max-w-[180px]"
       role="presentation"
+      className="h-auto w-full max-w-[180px]"
     >
       <Diagram />
     </svg>
