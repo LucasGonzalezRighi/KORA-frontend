@@ -16,6 +16,7 @@ export const es = {
     home: 'Inicio',
     solutions: 'Soluciones',
     method: 'Nuestro método',
+    about: 'Nosotras',
     blog: 'Blog',
     contact: 'Contacto',
     cta: 'Agendar consulta',
@@ -206,6 +207,99 @@ export const es = {
         question: 'Una vez finalizado el proyecto, ¿seguimos dependiendo de Kora?',
         answer:
           'No, y es deliberado. Documentamos todo y capacitamos a tu equipo para que el sistema siga funcionando sin nosotras. Si querés seguir acompañado, es una decisión tuya, no una necesidad.',
+      },
+    },
+  },
+
+  about: {
+    meta: {
+      title: 'Nosotras',
+      description:
+        'Mirada sistémica, método propio. Conocé al equipo detrás de Kora: ingeniería industrial, comunicación y tecnología para modernizar PyMEs y startups.',
+    },
+    hero: {
+      title: 'Mirada sistémica, método propio',
+      subtitle:
+        'Ordenamos procesos, digitalizamos flujos y dejamos un sistema que el equipo sostiene sin depender de nosotras.',
+    },
+    process: {
+      title: '¿Cómo lo hacemos?',
+      resultLabel: 'Resultado:',
+      steps: {
+        diagnostico: {
+          title: 'Diagnóstico',
+          description: 'Relevamos tu operación, identificamos cuellos de botella y puntos de pérdida.',
+          result: 'un mapa de la operación con prioridades definidas.',
+        },
+        implementacion: {
+          title: 'Implementación',
+          description:
+            'Estandarizamos procesos, digitalizamos flujos críticos y capacitamos al equipo.',
+          result: 'procesos documentados y herramientas que conectan.',
+        },
+        sistema: {
+          title: 'Sistema funcionando',
+          description: 'Dashboards, manuales, paneles, y automatizaciones activas.',
+          result: 'la empresa crece, el caos no.',
+        },
+      },
+      cta: 'Agendar diagnóstico',
+    },
+    intro: {
+      title: 'Nosotras',
+      subtitle: 'Precisión técnica y estrategia institucional: el equipo detrás de Kora.',
+    },
+    story: {
+      eyebrow: 'Sobre nosotras',
+      title: 'El equipo detrás de',
+      titleHighlight: 'kora',
+      /** Párrafos en el orden del recorrido: alternan izquierda / derecha. */
+      paragraphs: [
+        'Clara Yedlin, Lucía Gonzalez Righi y Luciana Gonella, cofundadoras de Kora.',
+        'Unimos nuestras trayectorias en Ingeniería Industrial (UTN-FRBA) y Comunicación Publicitaria (UCA), combinando años de experiencia en empresas tecnológicas con una visión sistémica entre ingeniería, comunicación, tecnología y gestión de proyectos.',
+        'Además de nuestra formación académica, contamos con experiencia en ventas consultivas de software, lo que nos permite comprender tanto las necesidades operativas del cliente como las posibilidades reales de implementación tecnológica.',
+        'Esta doble perspectiva nos ayuda a traducir problemas operativos en soluciones prácticas, escalables y comercialmente viables.',
+        'Juntas creamos Kora, una empresa que combina lo mejor de la ingeniería con herramientas del mundo tech y una visión integral de comunicación para ayudar a PyMEs y startups a modernizarse.',
+      ],
+    },
+    team: {
+      overline: 'El equipo',
+      title: 'Las personas detrás de Kora',
+      linkedinLabel: 'Ver el perfil de LinkedIn de',
+      members: {
+        clara: { name: 'Clara Yedlin', role: 'Ing. Industrial', school: 'UTN Buenos Aires' },
+        lucia: { name: 'Lucía Righi', role: 'Ing. Industrial', school: 'UTN Buenos Aires' },
+        luciana: { name: 'Luciana Gonella', role: 'Comunicación', school: 'UCA Buenos Aires' },
+      },
+    },
+    values: {
+      overline: 'Nuestros valores',
+      title: 'Lo que nos mueve',
+      items: {
+        compromiso: {
+          title: 'Compromiso',
+          description:
+            'Relevamos tu operación, identificamos cuellos de botella y puntos de pérdida.',
+        },
+        empatia: {
+          title: 'Empatía',
+          description: 'Entendemos el contexto de tu equipo antes de proponer cualquier cambio.',
+        },
+        innovacion: {
+          title: 'Innovación',
+          description:
+            'Combinamos ingeniería industrial con herramientas tech para soluciones que realmente escalan.',
+        },
+        exito: {
+          title: 'Éxito del cliente',
+          description:
+            'Tu resultado es nuestro resultado. Medimos el éxito en función del impacto real.',
+        },
+        agilidad: {
+          title: 'Agilidad',
+          description:
+            'Implementamos rápido, aprendemos en el camino y nos adaptamos sin perder el foco en el objetivo.',
+        },
       },
     },
   },

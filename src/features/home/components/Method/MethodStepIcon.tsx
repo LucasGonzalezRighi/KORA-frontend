@@ -138,8 +138,6 @@ function Construimos() {
         width="10"
         height="10"
         fill="none"
-        strokeWidth="0.75"
-        className="stroke-heading/30"
       />
       <rect
         x="42"

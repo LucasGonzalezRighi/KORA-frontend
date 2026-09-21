@@ -22,10 +22,23 @@ export const colorPrimitives = {
     700: '#a3551a',
     600: '#c46a1f',
     500: '#e08a3c',
+    /** Ámbar medio de las elipses de fondo. Solo se usa difuminado. */
+    450: '#e79a4e',
     400: '#ffb882',
+    /** Ámbar brillante de los numerales "01." de las cards de proceso. */
+    350: '#f4973a',
     300: '#fbd9bd',
     200: '#f8efe4',
     100: '#fff3e8',
+  },
+  /** Arena: los blobs grandes del hero. Solo se usa difuminado. */
+  sand: '#e9c39d',
+  /** Duraznos de las cards de Nosotras: superficie, borde y tile de icono. */
+  peach: {
+    surface: '#fffdfa',
+    border: '#f2dbc5',
+    tile: '#fef1e6',
+    tileBorder: '#fddfc7',
   },
   /**
    * Lienzo. La base es un casi-blanco **frío** — es el color que rodea a la
@@ -47,11 +60,12 @@ export const colorPrimitives = {
     300: '#cecece',
     200: '#e5e5e5',
   },
-  /** Tintes de los círculos de icono de las cards de valor — alternan. */
+  /** Azul acero: tinte frío de los iconos de card y de los glows de margen. */
   steel: {
     /** Azul acero de los íconos de las cards impares. */
     ink: '#305b7e',
     wash: 'rgba(48, 91, 126, 0.2)',
+    border: 'rgba(48, 91, 126, 0.6)',
   },
   /** Crema casi blanco del círculo de icono par. */
   iconCream: '#fff9f6',
@@ -106,6 +120,12 @@ export const semanticColors = {
     iconWash: colorPrimitives.steel.wash,
     /** Círculo de los iconos de las cards de valor — pares. */
     iconWashWarm: colorPrimitives.iconCream,
+    /** Cards de Nosotras: blanco apenas entibiado. */
+    surfaceWarm: colorPrimitives.peach.surface,
+    /** Tile cuadrado del icono en las cards de Nosotras. */
+    tile: colorPrimitives.peach.tile,
+    /** Tile frío — la card "Implementación" alterna a acero. */
+    tileCool: colorPrimitives.steel.wash,
   },
   text: {
     heading: colorPrimitives.ink[900],
@@ -121,6 +141,10 @@ export const semanticColors = {
     iconCool: colorPrimitives.steel.ink,
     /** Ícono de las cards de valor pares: ámbar claro sobre el círculo crema. */
     iconWarm: colorPrimitives.amber[500],
+    /** Numerales "01." de las cards de proceso. */
+    accentBright: colorPrimitives.amber[350],
+    /** Rol y universidad de las fundadoras, y el numeral de la card fría. */
+    steel: colorPrimitives.steel.ink,
   },
   accent: {
     primary: colorPrimitives.amber[600],
@@ -132,6 +156,12 @@ export const semanticColors = {
     subtle: colorPrimitives.amber[100],
     /** Borde ámbar fino de las cards. */
     card: colorPrimitives.cardHairline,
+    /** Borde durazno de las cards de Nosotras (proceso, fundadoras, valores). */
+    peach: colorPrimitives.peach.border,
+    /** Borde del tile de icono. */
+    tile: colorPrimitives.peach.tileBorder,
+    /** Borde del tile frío. */
+    tileCool: colorPrimitives.steel.border,
     /** Contorno de botones outline. */
     ink: colorPrimitives.ink[900],
     /** Bordes dentro de bloques oscuros. */
@@ -146,12 +176,34 @@ export const semanticColors = {
     hairlineInverse: 'rgba(255, 255, 255, 0.35)',
   },
   /**
-   * Gradientes cálidos de fondo — los "glows" del diseño.
+   * Colores de la **atmósfera**: las formas difuminadas que bañan el fondo de
+   * toda la página en Figma (`Colores hero`, `Colores`, `glows margenes`).
    *
-   * En Figma son elipses sueltas con blur, sembradas a lo largo del frame
-   * (`glow de color Izq/Derecha`, `Glow end of page`). Acá se reconstruyen como
-   * capas de un solo `background-image` sobre el body, más glows puntuales por
-   * sección.
+   * Cada entrada es el `fill` + opacidad exactos de una forma del diseño. Las
+   * posiciones, tamaños y radios de blur no van acá — son geometría, y viven en
+   * `components/atoms/Atmosphere/shapes.ts`.
+   */
+  atmosphere: {
+    /** Blob arena grande, arriba a la izquierda del hero. */
+    sand: 'rgba(233, 195, 157, 0.4)',
+    /** Blob durazno que se funde con el arena. */
+    peach: 'rgba(255, 184, 130, 0.5)',
+    /** Elipse ámbar a la derecha del hero. */
+    amberSoft: 'rgba(231, 154, 78, 0.2)',
+    /** Banda ámbar detrás de la primera fila de cards. */
+    band: 'rgba(196, 106, 31, 0.4)',
+    /** Glows de margen — alternan tibio y frío a los costados. */
+    marginAmber: 'rgba(196, 106, 31, 0.2)',
+    marginSteel: 'rgba(48, 91, 126, 0.4)',
+    marginSteelSoft: 'rgba(48, 91, 126, 0.3)',
+    marginSheer: 'rgba(251, 217, 189, 0.5)',
+    marginSheerSoft: 'rgba(251, 217, 189, 0.3)',
+  },
+  /**
+   * Gradientes cálidos puntuales — los glows por sección y el del contacto.
+   *
+   * El ambiente general de la página **no** está acá: son las formas de
+   * `atmosphere`, que se pintan como capas del DOM en `<Atmosphere>`.
    */
   glow: {
     /**

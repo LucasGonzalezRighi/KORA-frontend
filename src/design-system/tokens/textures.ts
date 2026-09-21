@@ -26,4 +26,14 @@ export const textures = {
   grainSize: '140px',
   /** Opacidad sobre superficies oscuras. */
   grainOpacityDark: 0.06,
+  /**
+   * Radios de blur de las formas de la atmósfera, en px. Son los
+   * `stdDeviation` con los que Figma exporta cada capa; se aplican tal cual con
+   * `filter: blur()`.
+   */
+  atmosphereBlur: {
+    soft: 137.8,
+    medium: 175,
+    wide: 200,
+  },
 } as const;

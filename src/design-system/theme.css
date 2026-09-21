@@ -42,19 +42,32 @@
   /* — Bordes finos — */
   --kora-border-card-hairline: rgba(196, 106, 31, 0.38);
 
+  /* — Cards de Nosotras — */
+  --kora-surface-warm: #fffdfa;
+  --kora-tile: #fef1e6;
+  --kora-tile-cool: rgba(48, 91, 126, 0.2);
+  --kora-border-peach: #f2dbc5;
+  --kora-border-tile: #fddfc7;
+  --kora-border-tile-cool: rgba(48, 91, 126, 0.6);
+  --kora-text-accent-bright: #f4973a;
+  --kora-text-steel: #305b7e;
+
   /* — Iconos de card (alternan) — */
   --kora-icon-wash: rgba(48, 91, 126, 0.2);
   --kora-icon-wash-warm: #fff9f6;
 
-  /* — Glows — */
-  /* Ambiente del body: cuatro capas que recorren toda la página. */
-  --kora-glow-page:
-    radial-gradient(1200px 780px at 50% 21%, rgba(250, 196, 152, 0.42) 0%, rgba(247, 246, 245, 0) 62%),
-    radial-gradient(900px 520px at 93% 1%, rgba(251, 217, 189, 0.4) 0%, rgba(247, 246, 245, 0) 58%),
-    radial-gradient(560px 720px at -5% 34%, rgba(255, 184, 130, 0.3) 0%, rgba(247, 246, 245, 0) 62%),
-    radial-gradient(560px 720px at 105% 37%, rgba(255, 184, 130, 0.26) 0%, rgba(247, 246, 245, 0) 62%),
-    radial-gradient(560px 780px at -5% 47%, rgba(255, 184, 130, 0.24) 0%, rgba(247, 246, 245, 0) 62%),
-    radial-gradient(1100px 460px at 45% 79%, rgba(251, 217, 189, 0.34) 0%, rgba(247, 246, 245, 0) 65%);
+  /* — Atmósfera: formas difuminadas del fondo (ver <Atmosphere>) — */
+  --kora-atmo-sand: rgba(233, 195, 157, 0.4);
+  --kora-atmo-peach: rgba(255, 184, 130, 0.5);
+  --kora-atmo-amber-soft: rgba(231, 154, 78, 0.2);
+  --kora-atmo-band: rgba(196, 106, 31, 0.4);
+  --kora-atmo-margin-amber: rgba(196, 106, 31, 0.2);
+  --kora-atmo-margin-steel: rgba(48, 91, 126, 0.4);
+  --kora-atmo-margin-steel-soft: rgba(48, 91, 126, 0.3);
+  --kora-atmo-margin-sheer: rgba(251, 217, 189, 0.5);
+  --kora-atmo-margin-sheer-soft: rgba(251, 217, 189, 0.3);
+
+  /* — Glows puntuales — */
   --kora-glow-left: radial-gradient(
     46% 58% at -6% 50%,
     rgba(255, 184, 130, 0.32) 0%,

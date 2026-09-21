@@ -14,6 +14,7 @@ export const ROUTES_APP = {
   blogPost: (locale: Locale, slug: string) => `/${locale}/blog/${slug}`,
   contacto: (locale: Locale) => `/${locale}/contacto`,
   metodo: (locale: Locale) => `/${locale}/metodo`,
+  nosotras: (locale: Locale) => `/${locale}/nosotras`,
   solution: (locale: Locale, unit: SolutionSlug) => `/${locale}/soluciones/${unit}`,
 } as const;
 
@@ -30,6 +31,17 @@ export const SECTION_IDS = {
   faqs: 'faqs',
   contacto: 'contacto',
 } as const;
+
+/**
+ * Ancla a una sección de la home **desde cualquier página**.
+ *
+ * Los `ANCHORS` pelados solo funcionan estando en la home; desde `/nosotras`
+ * un `#soluciones` no lleva a ningún lado. El nav y los CTA compartidos usan
+ * esto; los CTA que viven dentro de la home pueden seguir usando `ANCHORS`.
+ */
+export function homeAnchor(locale: Locale, section: keyof typeof SECTION_IDS): string {
+  return `${ROUTES_APP.home(locale)}#${SECTION_IDS[section]}`;
+}
 
 export const ANCHORS = {
   soluciones: `#${SECTION_IDS.soluciones}`,
