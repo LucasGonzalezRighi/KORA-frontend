@@ -11,7 +11,7 @@ import { NewsletterPanel } from '@/components/organisms/NewsletterPanel';
 import { ROUTES_APP, SECTION_IDS } from '@/constants/routes.app';
 import { POST_META, POST_SLUGS } from '@/features/home/data/posts';
 import type { Dictionary, Locale } from '@/i18n';
-import { REVEAL_ITEM_CLASS, useParallax, useScrollReveal } from '@/hooks/animations';
+import { REVEAL_ITEM_CLASS, useScrollReveal } from '@/hooks/animations';
 
 type BlogSectionProps = {
   locale: Locale;
@@ -22,12 +22,6 @@ type BlogSectionProps = {
 /** Últimos artículos + panel de newsletter. */
 export function BlogSection({ locale, dict, newsletterDict }: BlogSectionProps) {
   const containerRef = useScrollReveal<HTMLDivElement>();
-  // Cada portada se dispara con su propia posición, no con la de la grilla.
-  const coversRef = useParallax<HTMLUListElement>({
-    triggerSelf: true,
-    start: 'top bottom',
-    end: 'bottom top',
-  });
 
   return (
     <Section id={SECTION_IDS.blog}>
@@ -60,7 +54,7 @@ export function BlogSection({ locale, dict, newsletterDict }: BlogSectionProps) 
           </div>
 
           {/* 29px entre cards. */}
-          <ul ref={coversRef} className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             {POST_SLUGS.map((slug) => (
               <li key={slug} className={REVEAL_ITEM_CLASS}>
                 <BlogCard

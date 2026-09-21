@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { PARALLAX_ATTR, useTilt } from '@/hooks/animations';
+import { useTilt } from '@/hooks/animations';
 import { HTML_LANG, type Locale } from '@/i18n/config';
 
 /** Dimensiones de la portada tal como está exportada de Figma (nodo 194:369). */
@@ -50,30 +50,31 @@ export function BlogCard({
   return (
     <article
       ref={ref}
-      className="flex h-full flex-col rounded-panel border border-card bg-surface p-8 shadow-card-rest transition-shadow duration-300 ease-out hover:shadow-card-hover"
+      className="flex h-full flex-col rounded-card-soft border border-peach bg-surface px-8 pb-10 pt-8 shadow-card-rest transition-shadow duration-300 ease-out hover:shadow-card-hover"
     >
       {/*
-        La portada es más alta que su marco y se desplaza dentro de él al
-        scrollear. Es la técnica editorial de siempre: la imagen se mueve más
-        lento que la card, y el recorte fijo es lo que lo hace legible.
+        La portada va entera, a su tamaño (335×150), sin parallax. Antes se
+        mostraba a 200px de alto dentro de un marco de 150 para poder
+        desplazarla al scrollear: eso la ampliaba un 33%, le recortaba arriba y
+        abajo y, al ser un asset de 335px, la dejaba borrosa. El encuadre del
+        diseño es la imagen completa.
       */}
-      <div className="h-[150px] w-full overflow-hidden rounded-md">
+      <div className="w-full overflow-hidden rounded-md">
         <Image
           src={cover}
           alt=""
           width={COVER_WIDTH}
           height={COVER_HEIGHT}
-          {...{ [PARALLAX_ATTR]: 'subtle' }}
-          className="h-[200px] w-full object-cover"
+          className="h-auto w-full"
         />
       </div>
 
       {/* Medidas del nodo `texto card`: pill 129×27 a 27px de la imagen, título a 22, cuerpo a 32. */}
-      <span className="mt-7 w-fit rounded-pill border border-ink/60 px-[15px] py-1 font-display text-sm font-medium leading-relaxed text-heading">
+      <span className="mt-7 w-fit rounded-pill border border-ink/60 px-[15px] py-1 font-display text-sm font-bold leading-relaxed text-heading">
         {category}
       </span>
 
-      <h3 className="mt-[1.375rem] max-w-[19.3125rem] font-display text-lg font-bold leading-relaxed tracking-tight text-heading">
+      <h3 className="mt-[1.375rem] max-w-[19.3125rem] font-display text-lg font-black leading-relaxed tracking-tight text-heading">
         <Link href={href} className="transition-colors duration-200 ease-out hover:text-accent">
           {title}
         </Link>
@@ -88,7 +89,7 @@ export function BlogCard({
         </time>
         <Link
           href={href}
-          className="font-display text-sm font-bold leading-relaxed text-heading underline underline-offset-4 transition-colors duration-200 ease-out hover:text-accent"
+          className="font-display text-sm font-bold leading-relaxed text-heading underline decoration-accent decoration-2 underline-offset-4 transition-colors duration-200 ease-out hover:text-accent"
         >
           {readMoreLabel}
         </Link>
