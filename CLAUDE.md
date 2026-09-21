@@ -23,9 +23,12 @@ Las capacitaciones no desaparecen: pasan a ser **una de las tres unidades de neg
 
 ## 2. Fuente de diseño
 
-Archivo de Figma **`SGHzsJS717mdR0z1P5MKEF`** ("Kora."), página **Webiste**, frame **`TIPO 2`** (`1:1306`, 1440×7983).
+Archivo de Figma **`uJrCta0yOl50LIkAGaW5LQ`** ("Kora. Copy" — reemplaza al original `SGHzsJS717mdR0z1P5MKEF`, que tenía los mismos nodos), página **Webiste** (`1:692`). Dos frames:
 
-Se accede vía el MCP oficial de Figma. Nodos de referencia:
+- **`TIPO 2`** (`1:1306`, 1440×7983) — la home.
+- **`TIPO 3`** (`251:54`, 1440×5958) — la página **Nosotras** (`/nosotras`).
+
+Se accede vía el MCP oficial de Figma (plan Starter: tiene **límite de llamadas**; agotado, hay que esperar). Nodos de referencia:
 
 | Sección | Nodo |
 |---|---|
@@ -39,6 +42,14 @@ Se accede vía el MCP oficial de Figma. Nodos de referencia:
 | Newsletter | `196:512` |
 | FAQs | `196:476` |
 | Contacto | `197:51` |
+| Fondo — formas difuminadas | `251:68` Colores · `251:74` Colores hero · `433:352` glows margenes · `273:433` banda |
+| Nosotras — hero | `420:194` |
+| Nosotras — cards de proceso | `431:349` |
+| Nosotras — recorrido (textos + gráfico) | `427:293` · `427:294` · `431:346` |
+| Nosotras — fundadoras | `433:351` |
+| Nosotras — valores | `433:350` |
+
+**Fondo:** en Figma no es un gradiente sino **formas con blur** (blobs, elipses y rectángulos, durazno y azul acero) sembradas por el lienzo. Se portan literalmente en `components/atoms/Atmosphere/` — geometría en `shapes.ts`, colores en `tokens.color.atmosphere`, blur en `tokens.textures.atmosphereBlur` — y se repiten por toda la página, en la home y en Nosotras por igual.
 
 **Regla:** el diseño es la fuente de **copys, paleta y comportamiento**. La estructura del código la define este documento, no el árbol de capas de Figma.
 

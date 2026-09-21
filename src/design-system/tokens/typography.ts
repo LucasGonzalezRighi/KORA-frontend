@@ -26,6 +26,7 @@ export const fontWeights = {
 export const fontSizes = {
   xs: '0.75rem', // 12
   sm: '0.875rem', // 14 — texto de botones
+  smd: '0.9375rem', // 15 — "Resultado:" de las cards de proceso, universidad de fundadoras
   base: '1rem', // 16 — nav, inputs
   md: '1.125rem', // 18 — subheading del hero
   lg: '1.25rem', // 20 — cuerpo de cards, labels del form
@@ -72,6 +73,10 @@ export const fluidFontSizes = {
   contactTitle: 'clamp(1.875rem, 1.3rem + 2.4vw, 2.5rem)',
   /** Eyebrow monoespaciado de sección: 24px. */
   eyebrow: 'clamp(1.125rem, 0.95rem + 0.75vw, 1.5rem)',
+  /** Titular de página interior (Nosotras) — 64px en el diseño. */
+  pageTitle: 'clamp(2.25rem, 1.4rem + 3.8vw, 4rem)',
+  /** Títulos de sección de Nosotras — 52px en el diseño. */
+  sectionTitleLg: 'clamp(2rem, 1.35rem + 3vw, 3.25rem)',
 } as const;
 
 export const lineHeights = {

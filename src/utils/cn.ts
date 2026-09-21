@@ -16,6 +16,7 @@ const twMerge = extendTailwindMerge({
       'font-size': [
         {
           text: [
+            'smd',
             'md',
             'fluid-hero',
             'fluid-section',
@@ -23,6 +24,8 @@ const twMerge = extendTailwindMerge({
             'fluid-unit',
             'fluid-contact',
             'fluid-eyebrow',
+            'fluid-page-title',
+            'fluid-section-lg',
           ],
         },
       ],
@@ -37,6 +40,8 @@ const twMerge = extendTailwindMerge({
             'on-inverse-muted',
             'on-inverse-accent',
             'placeholder',
+            'accent-bright',
+            'steel',
           ],
         },
       ],

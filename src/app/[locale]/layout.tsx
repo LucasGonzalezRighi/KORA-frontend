@@ -3,7 +3,7 @@ import { IBM_Plex_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { Toaster } from 'sonner';
 
-import { AmbientGlow } from '@/components/atoms/AmbientGlow';
+import { Atmosphere } from '@/components/atoms/Atmosphere';
 import { Nav } from '@/components/organisms/Nav';
 import { SITE } from '@/constants/site';
 import { LocaleTransitionProvider } from '@/features/locale-transition';
@@ -94,7 +94,7 @@ export default async function LocaleLayout({
           que poder animar la página desde un clic que ocurre en el nav.
         */}
         <LocaleTransitionProvider>
-          <AmbientGlow />
+          <Atmosphere />
           <Nav locale={locale} dict={dict} />
           <main id="contenido">{children}</main>
         </LocaleTransitionProvider>

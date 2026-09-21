@@ -12,6 +12,7 @@ export const en: Dictionary = {
     home: 'Home',
     solutions: 'Solutions',
     method: 'Our method',
+    about: 'About us',
     blog: 'Blog',
     contact: 'Contact',
     cta: 'Book a consultation',
@@ -201,6 +202,95 @@ export const en: Dictionary = {
         question: 'Once the project ends, do we still depend on Kora?',
         answer:
           'No, and that is deliberate. We document everything and train your team so the system keeps running without us. Staying with us afterwards is your choice, not a requirement.',
+      },
+    },
+  },
+
+  about: {
+    meta: {
+      title: 'About us',
+      description:
+        'A systems view, a method of our own. Meet the team behind Kora: industrial engineering, communication and technology to modernise SMEs and startups.',
+    },
+    hero: {
+      title: 'A systems view, a method of our own',
+      subtitle:
+        'We put processes in order, digitise flows and leave behind a system the team can sustain without depending on us.',
+    },
+    process: {
+      title: 'How we do it',
+      resultLabel: 'Result:',
+      steps: {
+        diagnostico: {
+          title: 'Diagnosis',
+          description: 'We survey your operation and identify bottlenecks and points of loss.',
+          result: 'a map of the operation with defined priorities.',
+        },
+        implementacion: {
+          title: 'Implementation',
+          description: 'We standardise processes, digitise critical flows and train the team.',
+          result: 'documented processes and tools that connect.',
+        },
+        sistema: {
+          title: 'System running',
+          description: 'Dashboards, manuals, panels and active automations.',
+          result: 'the company grows, the chaos does not.',
+        },
+      },
+      cta: 'Book a diagnosis',
+    },
+    intro: {
+      title: 'About us',
+      subtitle: 'Technical precision and institutional strategy: the team behind Kora.',
+    },
+    story: {
+      eyebrow: 'About us',
+      title: 'The team behind',
+      titleHighlight: 'kora',
+      paragraphs: [
+        'Clara Yedlin, Lucía Gonzalez Righi and Luciana Gonella, co-founders of Kora.',
+        'We bring together backgrounds in Industrial Engineering (UTN-FRBA) and Advertising Communication (UCA), combining years of experience in technology companies with a systems view spanning engineering, communication, technology and project management.',
+        'Beyond our academic training, we have experience in consultative software sales, which lets us understand both the client’s operational needs and what is realistically achievable with technology.',
+        'This double perspective helps us translate operational problems into practical, scalable and commercially viable solutions.',
+        'Together we created Kora, a company that combines the best of engineering with tools from the tech world and an integral view of communication to help SMEs and startups modernise.',
+      ],
+    },
+    team: {
+      overline: 'The team',
+      title: 'The people behind Kora',
+      linkedinLabel: 'See the LinkedIn profile of',
+      members: {
+        clara: { name: 'Clara Yedlin', role: 'Industrial Eng.', school: 'UTN Buenos Aires' },
+        lucia: { name: 'Lucía Righi', role: 'Industrial Eng.', school: 'UTN Buenos Aires' },
+        luciana: { name: 'Luciana Gonella', role: 'Communication', school: 'UCA Buenos Aires' },
+      },
+    },
+    values: {
+      overline: 'Our values',
+      title: 'What drives us',
+      items: {
+        compromiso: {
+          title: 'Commitment',
+          description: 'We survey your operation and identify bottlenecks and points of loss.',
+        },
+        empatia: {
+          title: 'Empathy',
+          description: 'We understand your team’s context before proposing any change.',
+        },
+        innovacion: {
+          title: 'Innovation',
+          description:
+            'We combine industrial engineering with tech tools for solutions that truly scale.',
+        },
+        exito: {
+          title: 'Client success',
+          description: 'Your result is our result. We measure success by real impact.',
+        },
+        agilidad: {
+          title: 'Agility',
+          description:
+            'We implement fast, learn along the way and adapt without losing sight of the goal.',
+        },
       },
     },
   },

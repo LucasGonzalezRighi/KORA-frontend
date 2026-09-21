@@ -10,11 +10,11 @@
   }
 
   body {
-    @apply bg-canvas font-sans text-body antialiased;
+    @apply relative bg-canvas font-sans text-body antialiased;
     /*
-      Los halos cálidos NO van acá: viven en `<AmbientGlow>` como capas del DOM,
-      porque un `background-image` no se puede desplazar con transformaciones y
-      necesitamos que hagan parallax. Ver ese componente.
+      El fondo cálido NO va acá: son las formas de `<Atmosphere>`, capas
+      absolutas que cubren el documento entero. El `relative` es para que esa
+      capa mida lo mismo que la página y no solo el viewport.
     */
   }
 

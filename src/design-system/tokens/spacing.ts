@@ -35,6 +35,12 @@ export const semanticSpacing = {
    * que es el tope de la parte variable.
    */
   navRestOffset: 'calc(2.75rem + clamp(1rem, 4.4vw, 4rem))',
+  /**
+   * Padding superior del hero de las páginas interiores (Nosotras), que no
+   * tienen tarjeta: el nav en reposo más el aire hasta el titular. En Figma el
+   * titular arranca en `y=320` con el nav en `y=93`.
+   */
+  pageHeroTop: 'calc(2.75rem + clamp(1rem, 4.4vw, 4rem) + clamp(6rem, 1rem + 12vw, 13.2rem))',
 } as const;
 
 /**

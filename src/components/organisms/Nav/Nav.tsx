@@ -7,7 +7,7 @@ import { LinkButton } from '@/components/atoms/Button';
 import { Logo } from '@/components/atoms/Logo';
 import { Magnetic } from '@/components/atoms/Magnetic';
 import { buildNavItems } from '@/constants/navigation';
-import { ANCHORS } from '@/constants/routes.app';
+import { homeAnchor } from '@/constants/routes.app';
 import type { Dictionary, Locale } from '@/i18n';
 
 import { LocaleSwitcher } from './LocaleSwitcher';
@@ -124,7 +124,7 @@ export function Nav({ locale, dict }: NavProps) {
             */}
             <Magnetic className="inline-flex">
               <LinkButton
-                href={ANCHORS.contacto}
+                href={homeAnchor(locale, 'contacto')}
                 variant="solid"
                 size="sm"
                 className="px-3 text-xs sm:px-4 sm:text-sm"

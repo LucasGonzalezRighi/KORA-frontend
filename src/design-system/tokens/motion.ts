@@ -16,6 +16,8 @@ export const easings = {
   outExpoSoft: 'expo.out',
   outQuart: 'power2.out',
   inOut: 'power2.inOut',
+  /** Rebote corto para marcas que "se encienden" (puntos del recorrido). */
+  outBack: 'back.out(2)',
   /** Equivalentes en CSS, para transiciones de Tailwind. */
   cssOut: 'cubic-bezier(0.16, 1, 0.3, 1)',
   cssInOut: 'cubic-bezier(0.65, 0, 0.35, 1)',
