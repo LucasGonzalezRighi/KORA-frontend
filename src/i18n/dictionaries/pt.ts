@@ -261,8 +261,8 @@ export const pt: Dictionary = {
       title: 'As pessoas por trás da Kora',
       linkedinLabel: 'Ver o perfil no LinkedIn de',
       members: {
-        clara: { name: 'Clara Yedlin', role: 'Eng. Industrial', school: 'UTN Buenos Aires' },
-        lucia: { name: 'Lucía Righi', role: 'Eng. Industrial', school: 'UTN Buenos Aires' },
+        clara: { name: 'Clara Yedlin', role: 'Eng Industrial', school: 'UTN Buenos Aires' },
+        lucia: { name: 'Lucía Righi', role: 'Eng Industrial', school: 'UTN Buenos Aires' },
         luciana: { name: 'Luciana Gonella', role: 'Comunicação', school: 'UCA Buenos Aires' },
       },
     },

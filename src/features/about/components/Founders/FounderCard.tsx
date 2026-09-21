@@ -58,7 +58,13 @@ export function FounderCard({
           {name}
         </h3>
 
-        <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-steel">
+        {/*
+          Una sola línea, como en el diseño. La fila mide ~267px y el interior de
+          la card 269: por eso el gap es de 8px y no de 10, y no se permite el
+          salto — si un idioma la alarga, prefiere asomar unos px en el padding
+          antes que partir "UTN Buenos Aires" abajo.
+        */}
+        <p className="flex flex-nowrap items-center gap-x-2 whitespace-nowrap text-steel">
           <span className="font-display text-base font-bold uppercase leading-relaxed tracking-tight">
             {role}
           </span>
