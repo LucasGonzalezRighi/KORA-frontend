@@ -15,7 +15,7 @@ export function Founders({ dict }: { dict: Dictionary['about']['team'] }) {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <Section glow="right">
+    <Section glow="right" tight>
       <Container>
         <div ref={ref} className="flex flex-col items-center gap-16 lg:gap-24">
           <div className="flex flex-col items-center gap-8 text-center">

@@ -25,7 +25,8 @@ export function Process({
   return (
     <Section tight>
       <Container>
-        <div ref={ref} className="flex flex-col items-center gap-14">
+        {/* En el diseño: 80px del título a las cards y 131px de las cards al CTA. */}
+        <div ref={ref} className="flex flex-col items-center gap-20">
           <RevealText
             as="h2"
             className="text-center font-display text-fluid-section-sm font-bold leading-snug tracking-tight text-heading"
@@ -50,7 +51,7 @@ export function Process({
             ))}
           </ul>
 
-          <Magnetic className={`${REVEAL_ITEM_CLASS} mt-6`}>
+          <Magnetic className={`${REVEAL_ITEM_CLASS} mt-12`}>
             <LinkButton href={homeAnchor(locale, 'contacto')} variant="solid" size="xl">
               {dict.cta}
             </LinkButton>

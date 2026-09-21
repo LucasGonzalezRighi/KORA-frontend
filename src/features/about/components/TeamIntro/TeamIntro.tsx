@@ -11,7 +11,8 @@ export function TeamIntro({ dict }: { dict: Dictionary['about']['intro'] }) {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <Section tight>
+    /* Arriba lleva el padding grande: en el diseño hay 214px entre el CTA y "Nosotras". */
+    <Section tight className="pt-section-y">
       <Container>
         <div ref={ref} className="mx-auto flex max-w-[40rem] flex-col items-center gap-6 text-center">
           <RevealText
