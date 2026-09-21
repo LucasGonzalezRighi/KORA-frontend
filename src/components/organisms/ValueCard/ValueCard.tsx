@@ -85,9 +85,14 @@ export function ValueCard({
         `md` es 18 y `base` 16. Requiere que Tailwind regenere el CSS (borrar
         `.next`); si no, la clase no existe y el tamaño no cambia.
 
+        Desde `xl` (1280+) sube a 19px: medido en el navegador, es el máximo
+        que deja las seis bajadas en dos renglones a 1280 y 1440 — a 19.5 dos
+        de ellas ya se van a tres. Por debajo de 1280 las cards son más
+        angostas y las bajadas ya caen a tres renglones aun con 17.
+
         Es solo `font-size`. No toca el contenedor ni la grilla.
       */}
-      <p className="font-display text-[17px] leading-body tracking-tight text-body">
+      <p className="font-display text-[17px] leading-body tracking-tight text-body xl:text-[19px]">
         {description}
       </p>
     </article>
