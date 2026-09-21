@@ -22,7 +22,7 @@ export function Story({ dict }: { dict: Dictionary['about']['story'] }) {
             <Eyebrow className={REVEAL_ITEM_CLASS}>{dict.eyebrow}</Eyebrow>
             <RevealText
               as="h2"
-              className="max-w-[14ch] font-display text-fluid-section-lg font-bold leading-snug tracking-tight text-heading"
+              className="max-w-[14ch] font-display text-fluid-section-lg font-medium leading-snug tracking-tight text-heading"
             >
               {dict.title} <span className="text-accent-bright">{dict.titleHighlight}</span>
               <span className="text-accent-soft">.</span>
