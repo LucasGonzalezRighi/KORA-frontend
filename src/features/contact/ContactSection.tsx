@@ -82,7 +82,7 @@ export function ContactSection({ dict }: { dict: Dictionary['contact'] }) {
         <div className="relative">
           <span
             aria-hidden
-            className="absolute -left-[4.875rem] top-16 hidden h-[21.0625rem] w-px bg-hairline-inverse lg:block"
+            className="absolute -left-[4.875rem] top-16 hidden h-[21.0625rem] w-0.5 bg-hairline-inverse lg:block"
           />
           <ContactForm dict={dict} />
         </div>

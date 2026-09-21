@@ -53,6 +53,9 @@ export const koraPreset = {
         'icon-warm': semanticColors.text.iconWarm,
         'accent-bright': semanticColors.text.accentBright,
         'accent-vivid': semanticColors.text.accentVivid,
+        /* También como color de fondo: rieles y divisorias de 1–2px (`bg-hairline`). */
+        hairline: semanticColors.border.hairline,
+        'hairline-inverse': semanticColors.border.hairlineInverse,
         steel: semanticColors.text.steel,
       },
       borderColor: {
