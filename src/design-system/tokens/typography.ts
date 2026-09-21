@@ -85,6 +85,8 @@ export const lineHeights = {
   heading: '1.2',
   relaxed: '1.3',
   body: '1.45',
+  /** Bajadas de hero (Nosotras): 40px sobre 24px en el diseño. */
+  loose: '1.65',
 } as const;
 
 export const letterSpacings = {

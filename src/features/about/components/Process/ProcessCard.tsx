@@ -1,12 +1,10 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-
 import { useTilt } from '@/hooks/animations';
 import { cn } from '@/utils/cn';
 
-import type { ProcessTone } from '../../data/process';
+import type { ProcessIconId, ProcessTone } from '../../data/process';
+import { ProcessIcon, ResultArrow } from './ProcessIcon';
 
 const TILE_TONES: Record<ProcessTone, string> = {
   warm: 'border-tile bg-tile',
@@ -20,7 +18,7 @@ const INK_TONES: Record<ProcessTone, string> = {
 };
 
 type ProcessCardProps = {
-  icon: LucideIcon;
+  icon: ProcessIconId;
   /** "01", "02"… — el punto lo agrega la card, más grande, como en el diseño. */
   number: string;
   title: string;
@@ -32,14 +30,15 @@ type ProcessCardProps = {
 
 /**
  * Card de "¿Cómo lo hacemos?": tile de icono + numeral, título en peso black,
- * bajada, filete durazno y la línea de resultado con flecha.
+ * bajada, filete durazno y el renglón de resultado: un círculo con borde
+ * durazno y una flecha ámbar adentro, y el texto en ámbar.
  *
  * La card mide 380px de alto en el diseño y el contenido queda arriba; acá se
  * respeta el padding pero la altura la da el contenido, así los tres textos
  * de distinto largo no dejan huecos raros.
  */
 export function ProcessCard({
-  icon: Icon,
+  icon,
   number,
   title,
   description,
@@ -61,7 +60,7 @@ export function ProcessCard({
             TILE_TONES[tone],
           )}
         >
-          <Icon aria-hidden className={cn('size-6', INK_TONES[tone])} strokeWidth={1.75} />
+          <ProcessIcon id={icon} className={cn('h-6 w-auto', INK_TONES[tone])} />
         </span>
         <span className={cn('font-display font-medium leading-none', INK_TONES[tone])}>
           <span className="text-base">{number}</span>
@@ -82,9 +81,9 @@ export function ProcessCard({
         <p className="flex items-start gap-2.5">
           <span
             aria-hidden
-            className="mt-px flex size-[27px] shrink-0 items-center justify-center rounded-tile border border-tile bg-tile"
+            className="mt-px flex size-[27px] shrink-0 items-center justify-center rounded-full border border-tile bg-tile text-accent-bright"
           >
-            <ArrowRight className="size-3.5 text-accent-bright" strokeWidth={2} />
+            <ResultArrow className="w-3.5" />
           </span>
           <span className="font-display text-smd font-bold leading-relaxed tracking-tight text-accent">
             {resultLabel} {result}
