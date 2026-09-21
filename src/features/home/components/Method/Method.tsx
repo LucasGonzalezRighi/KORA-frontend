@@ -14,7 +14,6 @@ import {
   gsap,
   useGSAP,
   motionIsReduced,
-  whenFontsReady,
 } from '@/hooks/animations/gsap';
 import type { Dictionary } from '@/i18n';
 
@@ -23,14 +22,6 @@ import { MethodStepIcon } from './MethodStepIcon';
 
 /** Cuánto avanza la línea por cada paso. Cuatro pasos → 0.25 cada uno. */
 const STEP_SPAN = 1 / METHOD_STEP_IDS.length;
-
-/**
- * Cuánto tarda la línea en dibujarse de punta a punta, en segundos.
- *
- * Los nodos ámbar se reparten a lo largo de ese tiempo (`STEP_SPAN` de cada
- * uno), así que cada paso se enciende justo cuando la línea le llega.
- */
-const LINE_DURATION = 2.4;
 
 /**
  * Cuándo entra el diagrama dentro del reveal de un paso en móvil.
@@ -74,16 +65,16 @@ const AMBIENT = {
  *    y el resultado era que los diagramas estaban invisibles justo cuando los
  *    tenías en pantalla: el progreso arranca en 0 cuando la sección entra, así
  *    que solo se completaban después de haber scrolleado de largo.
- * 2. La *línea* y los *nodos ámbar* se dibujan una vez, al entrar la sección,
- *    y se quedan. Antes iban con `scrub`, y eso tenía un costo: al scrollear
- *    para arriba la línea se desdibujaba y los nodos se achicaban hasta
- *    desaparecer, y si la sección quedaba cerca del final de la página el
- *    recorrido nunca llegaba al fin y quedaban a medio dibujar. Ahora es
- *    play-once: lo que se dibujó, dibujado queda.
+ * 2. Solo la *línea* y los *nodos ámbar* siguen al scroll. Eso conserva la idea
+ *    —el sistema se va conectando— sin esconder el contenido.
  * 3. El *ambiente*: bucles suaves que no terminan nunca —parpadeo, órbita,
  *    respiración, halos, y los puntos que viajan por la línea—. Se crean en
  *    pausa y arrancan recién cuando termina la capa 1. Si arrancaran antes,
  *    competirían con la entrada por las mismas propiedades y se verían saltos.
+ *
+ * El recorrido del scrub además termina cuando el centro de la sección llega al
+ * medio de la pantalla, no cuando ya te fuiste: la línea se completa mientras
+ * la estás mirando.
  *
  * **Todo eso es la versión de desktop, donde los cuatro pasos entran juntos en
  * pantalla.** En móvil van apilados y la lista mide varias pantallas, así que
@@ -92,9 +83,9 @@ const AMBIENT = {
  * llegás, ya pasó todo. Por eso la rama de móvil dispara **por columna** y cada
  * paso enciende su propio ambiente al entrar.
  *
- * **Por qué las capas 2 y 3 no comparten elemento.** La entrada anima la escala
- * de `.kora-node-mark`. Un bucle de ambiente sobre la misma propiedad del
- * mismo nodo quedaría pisado. Por eso los
+ * **Por qué las capas 2 y 3 no comparten elemento.** El scrub anima la escala de
+ * `.kora-node-mark`, y la vuelve a fijar en cada scroll. Un bucle de
+ * ambiente sobre la misma propiedad del mismo nodo quedaría pisado. Por eso los
  * ganchos `kora-node-breathe` y `kora-node-orbit` son `<g>` envolventes: cada
  * capa anima su propia matriz de transformación y el navegador las compone.
  */
@@ -112,7 +103,7 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
         const { isDesktop, prefersReduced } = context.conditions as MotionConditions;
         if (motionIsReduced(prefersReduced)) return;
 
-        const { durations, easings, staggers, revealOffset } = tokens.motion;
+        const { durations, easings, choreography, staggers, revealOffset } = tokens.motion;
 
         /**
          * Los bucles de ambiente de los diagramas ya no se arman acá.
@@ -278,27 +269,19 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
           onLeaveBack: () => ambient.forEach((animation) => animation.pause()),
         });
 
-        /*
-          — Capa 2: la línea y los acentos. Play-once, igual que la capa 1. —
-
-          Mismo disparador que la estructura, a propósito: la línea empieza a
-          dibujarse junto con los diagramas y va encendiendo los nodos ámbar a
-          medida que los alcanza. Sin `scrub`: lo que ya se dibujó no se
-          deshace al scrollear para arriba ni queda a medio camino cuando la
-          sección está cerca del final de la página.
-        */
+        // — Capa 2: la línea y los acentos, atadas al scroll. —
         const timeline = gsap.timeline({
-          scrollTrigger: { trigger: scope, start: 'top 80%', once: true },
+          scrollTrigger: {
+            trigger: scope,
+            start: 'top 80%',
+            end: 'center 45%',
+            scrub: choreography.scrubSmoothing,
+          },
         });
 
         const mask = scope.querySelector('[data-method-mask]');
         if (mask) {
-          timeline.fromTo(
-            mask,
-            { scaleX: 0 },
-            { scaleX: 1, ease: 'none', duration: LINE_DURATION },
-            0,
-          );
+          timeline.fromTo(mask, { scaleX: 0 }, { scaleX: 1, ease: 'none', duration: 1 }, 0);
         }
 
         columns.forEach((column) => {
@@ -306,34 +289,13 @@ export function Method({ dict }: { dict: Dictionary['method'] }) {
           timeline.fromTo(
             column.querySelectorAll('.kora-node-mark'),
             { scale: 0, opacity: 0, transformOrigin: 'center' },
-            { scale: 1, opacity: 1, duration: durations.base, ease: 'back.out(2.2)' },
-            index * STEP_SPAN * LINE_DURATION,
+            { scale: 1, opacity: 1, duration: 0.1, ease: 'back.out(2.2)' },
+            index * STEP_SPAN,
           );
         });
       });
 
-      /*
-        Recalcular las posiciones de disparo cuando ya cargó todo.
-
-        ScrollTrigger mide dónde empieza cada sección al montar. Si en ese
-        momento todavía faltan la webfont y la imagen del hero, la página es más
-        corta de lo que va a ser y los puntos de disparo quedan calculados en un
-        scroll que no corresponde. El síntoma es justo este: llegás a la sección
-        y los diagramas no arrancan, y recién aparecen al moverte. Con
-        `once: true` es peor, porque si el disparo se consume en la posición
-        equivocada no hay segunda oportunidad. Un `refresh()` cuando las fuentes
-        están listas vuelve a medir con la altura real, y otro al `load` de la
-        ventana cubre a las imágenes, que pueden llegar después que la fuente.
-      */
-      const cancelarRefresco = whenFontsReady(() => ScrollTrigger.refresh());
-      const refrescar = () => ScrollTrigger.refresh();
-      window.addEventListener('load', refrescar);
-
-      return () => {
-        cancelarRefresco();
-        window.removeEventListener('load', refrescar);
-        mm.revert();
-      };
+      return () => mm.revert();
     },
     { scope: ref },
   );

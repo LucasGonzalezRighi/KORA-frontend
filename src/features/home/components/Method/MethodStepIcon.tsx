@@ -3,10 +3,11 @@ import type { MethodStepId } from '@/features/home/data/method';
 /**
  * Diagramas de los cuatro pasos del método.
  *
- * Son la geometría del prototipo (`kora_proceso_4_pasos.html`), que es la que
- * está publicada: un abanico que converge en un punto, un círculo con cuatro
- * marcas de encuadre y un punto que orbita, bloques sueltos que se ordenan, y
- * halos llenos que laten desde el centro.
+ * **Portados literalmente del prototipo `kora_proceso_4_pasos.html`**: mismas
+ * coordenadas, mismo `viewBox` de 120, mismas animaciones. Lo único traducido
+ * es la paleta — el prototipo usa azules y beiges (`#305B7E`, `#AFCBE3`,
+ * `#E3D9C8`) que no existen en el design system, así que se conservan las
+ * *relaciones* de contraste con los tokens del sitio:
  *
  * | Prototipo          | Acá          |
  * |--------------------|--------------|
@@ -22,110 +23,60 @@ import type { MethodStepId } from '@/features/home/data/method';
  * nodo: por eso los elementos con bucle no llevan `kora-node-*`, que es lo que
  * consulta `Method` para animar con el scroll.
  *
- * | Clase | Qué hace `Method` con ella |
- * |---|---|
- * | `kora-node-mark` | Aparece cuando la línea del método llega a ese paso. |
- * | `kora-node-dot` / `kora-node-ring` / `kora-node-line` | Entran al aparecer la sección. |
- * | `kora-node-flicker` | Late suave, en desorden: la señal todavía sin ordenar. |
- * | `kora-node-orbit` | Gira alrededor del centro del viewBox. |
- * | `kora-node-breathe` | Respira sobre su propio centro. |
- * | `kora-node-pulse` | Halos que se expanden desde el centro del viewBox. |
- *
- * Los tres últimos son **capas de transformación propias**: `kora-node-orbit` y
- * `kora-node-breathe` son `<g>` que envuelven al elemento en lugar de ser el
- * elemento mismo. Es a propósito — el bucle de ambiente y la entrada de la
- * línea animan transformaciones distintas del mismo nodo visual, y si
- * compartieran elemento se pisarían.
+ * El centro ámbar de los pasos 1, 2 y 4 sí lleva `kora-node-mark`: es estático
+ * en el prototipo, así que puede seguir encendiéndose cuando la línea del
+ * método lo alcanza. El del paso 3 no, porque ahí el prototipo lo anima.
  */
 
 const VIEW = 120;
 const CENTER = VIEW / 2;
 
-/**
- * Centro del viewBox como `svgOrigin` de GSAP.
- *
- * Va como string y no como número porque todo lo que gira o pulsa lo hace
- * alrededor del centro del *diagrama*, no del centro de su propia caja. Para
- * `<g>` envolventes las dos cosas no coinciden, y `transformOrigin: 'center'`
- * daría un giro descentrado.
- */
-export const ICON_ORIGIN = `${CENTER} ${CENTER}`;
-
-/**
- * Radio de la órbita del paso 2.
- *
- * Va *por fuera* del círculo (r=50), no sobre él: así el punto se lee como
- * algo que da vueltas alrededor del sistema y no como una marca pegada a la
- * circunferencia. Es la relación del prototipo, donde la órbita (42) queda
- * afuera del círculo dibujado (38).
- */
-const ORBIT_RADIUS = 62;
-
-/** Dónde converge el abanico del paso 1. */
-const FOCUS: readonly [number, number] = [109, 90];
-
-/**
- * Los puntos del abanico del paso 1: posición, radio y cuánta tinta lleva
- * cada uno. Son seis, en desorden a propósito, y uno solo es el que pesa.
- */
+/** La nube de puntos del paso 1, con su desfase de parpadeo. */
 const FAN = [
-  { x: 38, y: 4, r: 3, ink: 'fill-heading/45' },
-  { x: 11, y: 24, r: 4, ink: 'fill-heading/60' },
-  { x: 6, y: 63, r: 5.5, ink: 'fill-heading/90' },
-  { x: 30, y: 111, r: 4, ink: 'fill-heading/60' },
-  { x: 6, y: 143, r: 4, ink: 'fill-heading/60' },
-  { x: 46, y: 166, r: 3, ink: 'fill-heading/45' },
-] as const;
-
-/** Las cuatro marcas de encuadre del paso 2, una por esquina. */
-const CORNER_MARKS = [
-  'M45 53 L38 53 L38 60',
-  'M135 53 L142 53 L142 60',
-  'M45 127 L38 127 L38 120',
-  'M135 127 L142 127 L142 120',
-] as const;
-
-/** Esquinas del paso 4: los cuatro puntos que enmarcan los halos. */
-const FRAME_DOTS = [
-  [35, 38],
-  [148, 38],
-  [35, 144],
-  [148, 144],
+  { x: 18, y: 26, r: 2, tone: 'fill-heading', delay: '' },
+  { x: 30, y: 16, r: 1.5, tone: 'fill-heading/30', delay: 'kora-delay-1' },
+  { x: 14, y: 46, r: 2.5, tone: 'fill-heading', delay: 'kora-delay-2' },
+  { x: 26, y: 70, r: 2, tone: 'fill-heading/55', delay: 'kora-delay-3' },
+  { x: 14, y: 86, r: 2, tone: 'fill-heading/55', delay: 'kora-delay-4' },
+  { x: 34, y: 98, r: 1.5, tone: 'fill-heading/30', delay: 'kora-delay-5' },
 ] as const;
 
 function Entendemos() {
-  const [fx, fy] = FOCUS;
-
   return (
     <>
-      {FAN.map(({ x, y }) => (
+      {FAN.map((dot) => (
         <line
-          key={`l-${x}-${y}`}
-          x1={x}
-          y1={y}
-          x2={fx}
-          y2={fy}
-          className="kora-node-line kora-node-flicker stroke-heading/25"
-          strokeWidth="1.1"
+          key={`l-${dot.x}-${dot.y}`}
+          x1={dot.x}
+          y1={dot.y}
+          x2="66"
+          y2={CENTER}
+          strokeWidth="0.75"
+          className={`kora-loop-fade ${dot.delay} stroke-heading/30`}
         />
       ))}
-      {FAN.map(({ x, y, r, ink }) => (
-        <circle
-          key={`d-${x}-${y}`}
-          cx={x}
-          cy={y}
-          r={r}
-          className={`kora-node-dot kora-node-flicker ${ink}`}
-        />
-      ))}
-      {/* Los dos `>`: la señal ya tiene dirección. */}
       <path
-        d="M52 53 L57 58 L52 63 M54 121 L59 126 L54 131"
-        className="kora-node-line stroke-heading/50"
-        strokeWidth="1.1"
+        d="M40 42 L44 44 L40 47"
         fill="none"
+        strokeWidth="0.75"
+        className="kora-loop-fade kora-delay-6 stroke-heading/30"
       />
-      <circle cx={fx} cy={fy} r="17" className="kora-node-mark fill-accent" />
+      <path
+        d="M42 80 L46 78 L42 76"
+        fill="none"
+        strokeWidth="0.75"
+        className="kora-loop-fade kora-delay-6 stroke-heading/30"
+      />
+      {FAN.map((dot) => (
+        <circle
+          key={`d-${dot.x}-${dot.y}`}
+          cx={dot.x}
+          cy={dot.y}
+          r={dot.r}
+          className={`kora-loop-fade ${dot.delay} ${dot.tone}`}
+        />
+      ))}
+      <circle cx="66" cy={CENTER} r="8" className="kora-node-mark fill-accent" />
     </>
   );
 }
@@ -136,31 +87,42 @@ function Priorizamos() {
       <circle
         cx={CENTER}
         cy={CENTER}
-        r="50"
-        className="kora-node-ring fill-none stroke-heading/60"
-        strokeWidth="1"
+        r="38"
+        fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/22"
       />
-      {CORNER_MARKS.map((d) => (
-        <path
-          key={d}
-          d={d}
-          className="kora-node-line stroke-heading/50"
-          strokeWidth="1"
-          fill="none"
-        />
-      ))}
-      <circle cx="64" cy="47" r="4.5" className="kora-node-dot fill-heading/85" />
-      <circle cx="168" cy="66" r="3.5" className="kora-node-dot fill-heading/50" />
-      {/* El punto que orbita. El `<g>` es la capa que gira; el círculo solo se deja llevar. */}
-      <g className="kora-node-orbit">
-        <circle
-          cx={CENTER + ORBIT_RADIUS}
-          cy={CENTER}
-          r="3"
-          className="kora-node-dot fill-heading/60"
-        />
-      </g>
-      <circle cx={CENTER} cy={CENTER} r="15" className="kora-node-mark fill-accent" />
+      <circle
+        cx={CENTER}
+        cy={CENTER}
+        r="24"
+        fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/55"
+      />
+      <line
+        x1={CENTER}
+        y1="22"
+        x2={CENTER}
+        y2="98"
+        strokeWidth="0.5"
+        className="stroke-heading/12"
+      />
+      <line
+        x1="22"
+        y1={CENTER}
+        x2="98"
+        y2={CENTER}
+        strokeWidth="0.5"
+        className="stroke-heading/12"
+      />
+      <path d="M84 42 L88 40 L86 44" fill="none" strokeWidth="0.75" className="stroke-heading/30" />
+      <path d="M36 78 L32 80 L34 76" fill="none" strokeWidth="0.75" className="stroke-heading/30" />
+      <path d="M84 78 L88 80 L86 76" fill="none" strokeWidth="0.75" className="stroke-heading/30" />
+      <path d="M36 42 L32 40 L34 44" fill="none" strokeWidth="0.75" className="stroke-heading/30" />
+      <circle cx="46" cy="38" r="2" className="fill-heading" />
+      <circle cx={CENTER} cy={CENTER} r="8" className="kora-node-mark fill-accent" />
+      <circle cx={CENTER} cy={CENTER} r="2" className="kora-loop-orbit fill-heading/55" />
     </>
   );
 }
@@ -168,47 +130,13 @@ function Priorizamos() {
 function Construimos() {
   return (
     <>
-      {/* Lo que ya está resuelto: dos bloques sólidos. */}
-      <rect x="10" y="28" width="20" height="20" className="kora-node-dot fill-heading" />
-      <rect x="10" y="133" width="20" height="20" className="kora-node-dot fill-heading" />
-      {/* Lo que falta: tres bloques vacíos, todavía sueltos. */}
+      <rect x="20" y="30" width="9" height="9" className="fill-heading" />
+      <rect x="20" y="82" width="9" height="9" className="fill-heading" />
       <rect
-        x="73"
-        y="9"
-        width="21"
-        height="21"
-        className="kora-node-line fill-none stroke-heading/40"
-        strokeWidth="1.1"
-      />
-      <rect
-        x="53"
-        y="75"
-        width="21"
-        height="21"
-        className="kora-node-line fill-none stroke-heading/40"
-        strokeWidth="1.1"
-      />
-      <rect
-        x="90"
-        y="112"
-        width="21"
-        height="21"
-        className="kora-node-line fill-none stroke-heading/40"
-        strokeWidth="1.1"
-      />
-      {/* `□→`: el siguiente bloque, ya en camino. */}
-      <rect
-        x="147"
-        y="57"
-        width="15"
-        height="15"
-        className="kora-node-line fill-none stroke-heading/50"
-        strokeWidth="1.1"
-      />
-      <path
-        d="M165 64.5 H177 M172.5 60 L177 64.5 L172.5 69"
-        className="kora-node-line stroke-heading/55"
-        strokeWidth="1.1"
+        x="52"
+        y="20"
+        width="10"
+        height="10"
         fill="none"
         strokeWidth="0.75"
         className="stroke-heading/30"
@@ -253,10 +181,6 @@ function Construimos() {
         strokeWidth="0.75"
         className="stroke-heading/30"
       />
-      {/* El bloque que se está construyendo respira. La escala de la entrada vive en el `<rect>`. */}
-      <g className="kora-node-breathe">
-        <rect x="108" y="62" width="25" height="25" className="kora-node-mark fill-accent" />
-      </g>
     </>
   );
 }
@@ -264,23 +188,22 @@ function Construimos() {
 function Funcionando() {
   return (
     <>
-      {/*
-        Los halos van de mayor a menor porque el bucle los escalona desde el
-        final, y así el pulso sale de adentro hacia afuera. Son rellenos y se
-        apilan: donde se superponen la tinta se suma, y por eso el centro se lee
-        más cargado que el borde sin dibujar anillos.
-
-        El relleno es acento sólido a propósito, sin `/15` ni `/30`. La opacidad
-        es lo que anima el bucle, y si además viniera bajada por la clase las dos
-        se multiplicarían: el halo quedaría en un 5% real y no se vería nada.
-      */}
-      <circle cx={CENTER} cy={CENTER} r="64" className="kora-node-pulse fill-accent" />
-      <circle cx={CENTER} cy={CENTER} r="42" className="kora-node-pulse fill-accent" />
-      <circle cx={CENTER} cy={CENTER} r="24" className="kora-node-pulse fill-accent" />
-      {FRAME_DOTS.map(([x, y]) => (
-        <circle key={`${x}-${y}`} cx={x} cy={y} r="3" className="kora-node-dot fill-heading/45" />
-      ))}
-      <circle cx={CENTER} cy={CENTER} r="13" className="kora-node-mark fill-accent" />
+      <circle
+        cx={CENTER}
+        cy={CENTER}
+        r="38"
+        fill="none"
+        strokeWidth="0.75"
+        className="stroke-heading/22"
+      />
+      <circle cx={CENTER} cy={CENTER} r="30" className="kora-loop-pulse kora-delay-4 fill-accent" />
+      <circle cx={CENTER} cy={CENTER} r="20" className="kora-loop-pulse kora-delay-2 fill-accent" />
+      <circle cx={CENTER} cy={CENTER} r="12" className="kora-loop-pulse fill-accent" />
+      <circle cx={CENTER} cy={CENTER} r="8" className="kora-node-mark fill-accent" />
+      <circle cx="88" cy="34" r="1.5" className="fill-heading/30" />
+      <circle cx="32" cy="34" r="1.5" className="fill-heading/30" />
+      <circle cx="88" cy="86" r="1.5" className="fill-heading/30" />
+      <circle cx="32" cy="86" r="1.5" className="fill-heading/30" />
     </>
   );
 }
