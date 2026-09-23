@@ -12,7 +12,7 @@ export type ButtonVariant =
   /** Circular de acento — flecha del newsletter. */
   | 'icon';
 
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
 type BaseProps = {
   variant?: ButtonVariant;

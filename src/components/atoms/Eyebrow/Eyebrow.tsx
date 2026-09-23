@@ -16,7 +16,7 @@ type EyebrowSize = 'sm' | 'md';
 /** `sm` para etiquetas dentro de bloques (contacto); `md` es la de sección. */
 const SIZES: Record<EyebrowSize, string> = {
   sm: 'text-base',
-  md: 'text-fluid-eyebrow leading-relaxed',
+  md: 'text-md leading-relaxed',
 };
 
 type EyebrowProps = {
@@ -29,9 +29,12 @@ type EyebrowProps = {
 };
 
 /**
- * Etiqueta monoespaciada que encabeza una sección ("Nuestras soluciones").
- * En el diseño va a 24px, bastante más grande de lo que sugiere la palabra
- * "eyebrow" — de ahí que `md` sea el default.
+ * Etiqueta que encabeza una sección ("Nuestras soluciones", "Sobre nosotras").
+ *
+ * En el archivo "Kora. Copy" va en Satoshi a 18px con la marca chica: medido
+ * sobre el render, la marca mide lo que la altura de x del texto y el texto es
+ * un tercio del titular de 52px. La caja de 31px de la metadata es la línea,
+ * no el cuerpo.
  */
 export function Eyebrow({
   withMark = true,
@@ -43,13 +46,13 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        'flex items-start gap-4 font-mono font-medium tracking-tight',
+        'flex items-center gap-3 font-display font-medium tracking-tight',
         SIZES[size],
         TONES[tone],
         className,
       )}
     >
-      {withMark ? <SquareMark className="mt-1.5" /> : null}
+      {withMark ? <SquareMark size="sm" /> : null}
       <span className="whitespace-pre-line">{children}</span>
     </p>
   );

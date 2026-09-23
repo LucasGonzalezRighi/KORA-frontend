@@ -41,6 +41,7 @@ const twMerge = extendTailwindMerge({
             'on-inverse-accent',
             'placeholder',
             'accent-bright',
+            'accent-vivid',
             'steel',
           ],
         },

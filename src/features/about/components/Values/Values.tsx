@@ -15,13 +15,17 @@ export function Values({ dict }: { dict: Dictionary['about']['values'] }) {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <Section tight>
-      <Container>
+    /* `pb-page-tail`: los ~490px de aire que el diseño deja antes del contacto. */
+    <Section tight className="pb-page-tail">
+      {/*
+        `wide`: la fila de cinco cards mide 1198px en el diseño, más que el
+        contenido del contenedor por defecto (1144 a 1440). Con el angosto las
+        cards quedaban en 203px en vez de 214 y las bajadas se iban a 5 líneas.
+      */}
+      <Container width="wide">
         <div ref={ref} className="flex flex-col items-center gap-14">
           <div className="flex flex-col items-center gap-8 text-center">
-            <Overline className={`${REVEAL_ITEM_CLASS} text-xl font-black normal-case tracking-tight`}>
-              {dict.overline.toUpperCase()}
-            </Overline>
+            <Overline className={REVEAL_ITEM_CLASS}>{dict.overline}</Overline>
             <RevealText
               as="h2"
               className="font-display text-fluid-section-lg font-bold leading-snug tracking-tight text-heading"
@@ -30,8 +34,8 @@ export function Values({ dict }: { dict: Dictionary['about']['values'] }) {
             </RevealText>
           </div>
 
-          {/* 32px entre cards en el diseño; 214px cada una. */}
-          <ul className="grid w-full max-w-[75rem] grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+          {/* 32px entre cards en el diseño; 214px cada una → fila de 1198px. */}
+          <ul className="grid w-full max-w-[74.875rem] grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
             {VALUE_IDS.map((id) => (
               <li key={id} className={REVEAL_ITEM_CLASS}>
                 <ValueMiniCard

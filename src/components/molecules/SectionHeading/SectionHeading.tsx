@@ -58,7 +58,9 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        'flex flex-col gap-heading-gap',
+        'flex flex-col',
+        // Con overline el diseño deja 32px hasta el título; con eyebrow, 24.
+        overline ? 'gap-8' : 'gap-heading-gap',
         centered ? 'items-center text-center' : 'items-start text-left',
         className,
       )}
@@ -67,12 +69,20 @@ export function SectionHeading({
       {eyebrowPlain ? <Eyebrow withMark={false}>{eyebrowPlain}</Eyebrow> : null}
       {overline ? <Overline>{overline}</Overline> : null}
 
+      {/*
+        Con eyebrow marcado ("Blog", "Preguntas frecuentes") el diseño corre el
+        titular 40px a la derecha, para que arranque a la altura del texto del
+        eyebrow y no de la marca. Y sin balanceo: las cajas del diseño cortan
+        "Ideas para modernizar / tu empresa", no en mitades parejas.
+      */}
       <RevealText
         as="h2"
         className={cn(
           'font-display font-medium tracking-tight text-heading',
           TITLE_SIZES[size],
           titleMaxWidth ?? (centered ? 'max-w-[20ch]' : 'max-w-[24ch]'),
+          // Margen y no padding: el ancho máximo tiene que ser el del texto.
+          eyebrow && !centered && 'text-wrap md:ml-10',
         )}
       >
         {title}

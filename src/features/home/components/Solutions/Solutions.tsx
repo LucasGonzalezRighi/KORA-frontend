@@ -44,7 +44,8 @@ export function Solutions({ locale, dict }: SolutionsProps) {
   return (
     <Section id={SECTION_IDS.soluciones} glow="left" className="-mb-[85px] pb-0">
       <Container>
-        <div ref={headerRef} className="flex flex-col gap-12">
+        {/* 117px entre "Nuestras soluciones" y "TRES UNIDADES DE NEGOCIO" en el diseño. */}
+        <div ref={headerRef} className="flex flex-col gap-16 lg:gap-[7.3125rem]">
           <Eyebrow className={REVEAL_ITEM_CLASS}>{dict.eyebrow}</Eyebrow>
 
           <SectionHeading

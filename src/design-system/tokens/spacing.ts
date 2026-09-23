@@ -41,19 +41,39 @@ export const semanticSpacing = {
    * titular arranca en `y=320` con el nav en `y=93`.
    */
   pageHeroTop: 'calc(2.75rem + clamp(1rem, 4.4vw, 4rem) + clamp(6rem, 1rem + 12vw, 13.2rem))',
+  /**
+   * Aire al final de Nosotras, entre las cards de valores y el bloque de
+   * contacto. En Figma son 493px (medido en el render de TIPO 3) — es un
+   * remanso deliberado de la página, no un padding de sección; en la home el
+   * equivalente son 176px.
+   */
+  pageTail: 'clamp(8rem, 2rem + 32vw, 30.8rem)',
+  /**
+   * Padding del bloque oscuro de contacto. En Figma el contenido arranca a
+   * 104px del borde superior y deja 216 hasta el final de la página, en las
+   * dos páginas (TIPO 2 y TIPO 3).
+   */
+  contactTop: 'clamp(4rem, 2rem + 5vw, 6.5rem)',
+  contactBottom: 'clamp(5rem, 2rem + 12.8vw, 13.5rem)',
 } as const;
 
 /**
  * Anchos máximos. El diseño de Figma está sobre un lienzo de 1440 con el
- * contenido a 1220 (nav) / 1235 (blog) — se normaliza a 1240.
+ * contenido a 1220 (nav) / 1235 (blog) — se normaliza a 1220.
+ *
+ * Ojo: `Container` aplica el `max-w` y el `px-gutter` sobre el mismo
+ * elemento, así que el padding va **adentro** del máximo. Para que el
+ * contenido mida 1220 el máximo tiene que ser 1220 + 2 × 48 de gutter = 1316.
+ * (Estuvo en 1240 y el contenido quedaba en 1144: todo 76px más angosto que
+ * el diseño.)
  */
 export const containers = {
-  /** Ancho por defecto del contenido. */
-  default: '77.5rem', // 1240
+  /** Ancho por defecto del contenido: 1220 + gutters. */
+  default: '82.25rem', // 1316
   /** Bloques de texto que no deberían pasar de ~800px. */
   narrow: '50rem', // 800
   /** Ancho del nav — igual al default para que el logo alinee con el contenido. */
-  nav: '77.5rem',
+  nav: '82.25rem',
   /** Ancho del bloque de contacto oscuro. */
   wide: '90rem', // 1440
 } as const;

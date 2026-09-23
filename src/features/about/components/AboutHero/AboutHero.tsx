@@ -28,7 +28,7 @@ export function AboutHero({ dict }: { dict: Dictionary['about']['hero'] }) {
           </RevealText>
 
           <p
-            className={`${REVEAL_ITEM_CLASS} max-w-[36ch] font-display text-xl font-medium leading-relaxed tracking-tight text-body`}
+            className={`${REVEAL_ITEM_CLASS} font-display text-xl font-medium leading-loose tracking-tight text-body`}
           >
             {dict.subtitle}
           </p>

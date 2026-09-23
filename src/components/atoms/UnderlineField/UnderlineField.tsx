@@ -26,11 +26,12 @@ const FIELD_WRAPPER =
   'after:ease-out after:content-[""] focus-within:after:scale-x-100';
 
 const FIELD_BASE =
-  'w-full border-0 border-b border-hairline-inverse bg-transparent pb-3 pt-2 ' +
-  'font-display text-lg text-on-inverse placeholder:text-on-inverse-muted/60 ' +
+  'w-full border-0 border-b border-hairline-inverse bg-transparent pb-1 pt-0 ' +
+  'font-display text-lg leading-relaxed text-on-inverse placeholder:text-on-inverse-muted/60 ' +
   'transition-colors duration-200 ease-out focus:outline-none';
 
-const LABEL_BASE = 'font-display text-lg tracking-tight text-on-inverse';
+/** 26px de etiqueta + 12 de aire + 30 de campo ≈ los 65px hasta la línea del diseño. */
+const LABEL_BASE = 'font-display text-lg leading-relaxed tracking-tight text-on-inverse';
 
 /**
  * Campo del formulario de contacto: label arriba y una línea fina abajo,
@@ -45,7 +46,7 @@ export const UnderlineInput = forwardRef<HTMLInputElement, InputProps>(function 
   const errorId = `${fieldId}-error`;
 
   return (
-    <div className={cn('flex w-full flex-col gap-6', FIELD_WRAPPER, className)}>
+    <div className={cn('flex w-full flex-col gap-3', FIELD_WRAPPER, className)}>
       <label htmlFor={fieldId} className={LABEL_BASE}>
         {label}
       </label>
@@ -73,7 +74,7 @@ export const UnderlineTextarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const errorId = `${fieldId}-error`;
 
     return (
-      <div className={cn('flex w-full flex-col gap-6', FIELD_WRAPPER, className)}>
+      <div className={cn('flex w-full flex-col gap-3', FIELD_WRAPPER, className)}>
         <label htmlFor={fieldId} className={LABEL_BASE}>
           {label}
         </label>

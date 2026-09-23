@@ -14,17 +14,27 @@ export function Story({ dict }: { dict: Dictionary['about']['story'] }) {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <Section glow="left">
+    <Section glow="left" tight>
       <Container>
-        <div className="flex flex-col gap-16 lg:gap-20">
-          <div ref={ref} className="flex flex-col gap-heading-gap">
+        <div className="flex flex-col gap-16">
+          {/* 36px entre eyebrow y titular en el diseño (más que el heading-gap general). */}
+          <div ref={ref} className="flex flex-col gap-9">
             <Eyebrow className={REVEAL_ITEM_CLASS}>{dict.eyebrow}</Eyebrow>
             <RevealText
               as="h2"
-              className="max-w-[14ch] font-display text-fluid-section-lg font-bold leading-snug tracking-tight text-heading"
+              /*
+                26rem = 416px: la primera línea del diseño ("El equipo detrás", 378px a
+                52px) entra en es/en/pt, y el "de kora." baja solo.
+
+                `text-wrap` (normal) anula el `text-wrap: balance` que `globals.css`
+                aplica a todos los h2: balanceado, el navegador prefiere
+                "El equipo / detrás de kora." por ser dos líneas parejas, y el
+                diseño corta antes de "de".
+              */
+              className="max-w-[26rem] text-wrap font-display text-fluid-section-lg font-medium leading-snug tracking-tight text-heading"
             >
-              {dict.title} <span className="text-accent">{dict.titleHighlight}</span>
-              <span className="text-accent">.</span>
+              {dict.title} <span className="text-accent-vivid">{dict.titleHighlight}</span>
+              <span className="text-accent-soft">.</span>
             </RevealText>
           </div>
 

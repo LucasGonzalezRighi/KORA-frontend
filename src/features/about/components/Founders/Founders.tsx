@@ -15,13 +15,11 @@ export function Founders({ dict }: { dict: Dictionary['about']['team'] }) {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
-    <Section glow="right">
+    <Section glow="right" tight>
       <Container>
         <div ref={ref} className="flex flex-col items-center gap-16 lg:gap-24">
           <div className="flex flex-col items-center gap-8 text-center">
-            <Overline className={`${REVEAL_ITEM_CLASS} text-xl font-black normal-case tracking-tight`}>
-              {dict.overline.toUpperCase()}
-            </Overline>
+            <Overline className={REVEAL_ITEM_CLASS}>{dict.overline}</Overline>
             <RevealText
               as="h2"
               className="font-display text-fluid-section-lg font-bold leading-snug tracking-tight text-heading"
@@ -39,8 +37,7 @@ export function Founders({ dict }: { dict: Dictionary['about']['team'] }) {
                   name={dict.members[id].name}
                   role={dict.members[id].role}
                   school={dict.members[id].school}
-                  photo={FOUNDERS[id].photo}
-                  linkedinUrl={FOUNDERS[id].linkedinUrl}
+                  founder={FOUNDERS[id]}
                   linkedinLabel={dict.linkedinLabel}
                 />
               </li>

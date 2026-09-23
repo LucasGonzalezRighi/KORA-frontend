@@ -162,7 +162,7 @@ export const en: Dictionary = {
 
   newsletter: {
     title: 'Get our articles in your inbox',
-    description: 'Practical ideas on AI, processes and digitalisation. No spam.',
+    description: 'Practical ideas on AI, processes and digitalisation.\nNo spam.',
     placeholder: 'you@company.com',
     submitLabel: 'Subscribe to the newsletter',
     success: 'Done, you are subscribed.',
@@ -260,8 +260,8 @@ export const en: Dictionary = {
       title: 'The people behind Kora',
       linkedinLabel: 'See the LinkedIn profile of',
       members: {
-        clara: { name: 'Clara Yedlin', role: 'Industrial Eng.', school: 'UTN Buenos Aires' },
-        lucia: { name: 'Lucía Righi', role: 'Industrial Eng.', school: 'UTN Buenos Aires' },
+        clara: { name: 'Clara Yedlin', role: 'Industrial Eng', school: 'UTN Buenos Aires' },
+        lucia: { name: 'Lucía Righi', role: 'Industrial Eng', school: 'UTN Buenos Aires' },
         luciana: { name: 'Luciana Gonella', role: 'Communication', school: 'UCA Buenos Aires' },
       },
     },

@@ -52,6 +52,10 @@ export const koraPreset = {
         'icon-cool': semanticColors.text.iconCool,
         'icon-warm': semanticColors.text.iconWarm,
         'accent-bright': semanticColors.text.accentBright,
+        'accent-vivid': semanticColors.text.accentVivid,
+        /* También como color de fondo: rieles y divisorias de 1–2px (`bg-hairline`). */
+        hairline: semanticColors.border.hairline,
+        'hairline-inverse': semanticColors.border.hairlineInverse,
         steel: semanticColors.text.steel,
       },
       borderColor: {
@@ -122,6 +126,9 @@ export const koraPreset = {
         'card-gutter': semanticSpacing.cardGutter,
         'nav-rest': semanticSpacing.navRestOffset,
         'page-hero': semanticSpacing.pageHeroTop,
+        'page-tail': semanticSpacing.pageTail,
+        'contact-top': semanticSpacing.contactTop,
+        'contact-bottom': semanticSpacing.contactBottom,
       },
       maxWidth: {
         container: containers.default,
